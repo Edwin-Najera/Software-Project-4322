@@ -1,0 +1,52 @@
+query AllEvents @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  events {
+    id
+    name
+    eventDate
+    description
+    photoLimit
+    createdAt
+    owner {
+      id
+      displayName
+    }
+  }
+}
+
+query MyPhotos @auth(level: USER) {
+  photos(where: {uploader: {id_expr: "auth.uid"}}) {
+    id
+    imageUrl
+    caption
+    createdAt
+    event {
+      id
+      name
+    }
+  }
+}
+
+mutation CreateEvent($name: String!, $eventDate: Date!, $description: String, $photoLimit: Int) @auth(level: USER) {
+  event_insert(data: {
+    name: $name,
+    eventDate: $eventDate,
+    description: $description,
+    photoLimit: $photoLimit,
+    ownerId_expr: "auth.uid",
+    createdAt_expr: "request.time"
+  }) {
+    id
+  }
+}
+
+mutation UploadPhoto($eventId: UUID!, $imageUrl: String!, $caption: String) @auth(level: USER) {
+  photo_insert(data: {
+    eventId: $eventId,
+    imageUrl: $imageUrl,
+    caption: $caption,
+    uploaderId_expr: "auth.uid",
+    createdAt_expr: "request.time"
+  }) {
+    id
+  }
+}

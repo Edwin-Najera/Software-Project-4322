@@ -1,0 +1,31 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+  eventLimit: Int
+}
+
+type Event @table {
+  name: String!
+  eventDate: Date!
+  createdAt: Timestamp!
+  description: String
+  photoLimit: Int
+  owner: User!
+}
+
+type Photo @table {
+  imageUrl: String!
+  createdAt: Timestamp!
+  caption: String
+  event: Event!
+  uploader: User!
+}
+
+type Analytic @table {
+  eventType: String!
+  timestamp: Timestamp!
+  userIdentifier: String
+  event: Event!
+}
