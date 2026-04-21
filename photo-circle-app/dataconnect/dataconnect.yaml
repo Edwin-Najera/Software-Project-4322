@@ -1,13 +1,13 @@
 specVersion: "v1"
-serviceId: "photo-circle-app"
-location: "us-east4"
+serviceId: "picnest-527a2-service"
+location: "us-south1"
 schema:
   source: "./schema"
   datasource:
     postgresql:
-      database: "fdcdb"
+      database: "picnest-527a2-database"
       cloudSql:
-        instanceId: "photo-circle-app-fdc"
+        instanceId: "picnest-527a2-instance"
         # schemaValidation: "STRICT"     # STRICT mode makes Postgres schema match Data Connect exactly.
         # schemaValidation: "COMPATIBLE" # COMPATIBLE mode makes Postgres schema compatible with Data Connect.
 connectorDirs: ["./example"]
