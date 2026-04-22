@@ -29,7 +29,6 @@ function CreateEventForm({ dcUserId, onSuccess }) {
           );
           modal?.hide();
           onSuccess?.();
-          refetch();
         },
         onError: (err) => console.error(err),
       },

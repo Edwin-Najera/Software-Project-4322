@@ -31,7 +31,6 @@ function UploadPhoto({ dcUserId, eventId, onSuccess }) {
             );
             modal?.hide();
             onSuccess?.();
-            refetch();
           },
           onError: (err) => {
             setError(err.message);
