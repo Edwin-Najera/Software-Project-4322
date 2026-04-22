@@ -5,7 +5,7 @@ import { auth } from "../firebase/firebase";
 import UploadPhotoModal from "../input/UploadPhotoModal";
 
 function EventPage() {
-  const { eventId } = useParams();
+  const { eventId, joinCode } = useParams();
   const navigate = useNavigate();
   const [user, authLoading] = useAuthState(auth);
   const { data, isLoading, isError } = useMyPhotos({ enabled: !!user });
