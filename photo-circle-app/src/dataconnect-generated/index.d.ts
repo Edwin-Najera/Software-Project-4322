@@ -85,6 +85,10 @@ export interface GetCurrentUserData {
   } & User_Key)[];
 }
 
+export interface GetCurrentUserVariables {
+  firebaseUid: string;
+}
+
 export interface GetEventByCodeData {
   events: ({
     id: UUIDString;
@@ -298,13 +302,13 @@ export function myJoinedEvents(dc: DataConnect): QueryPromise<MyJoinedEventsData
 
 interface GetCurrentUserRef {
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<GetCurrentUserData, undefined>;
+  (vars: GetCurrentUserVariables): QueryRef<GetCurrentUserData, GetCurrentUserVariables>;
   /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<GetCurrentUserData, undefined>;
+  (dc: DataConnect, vars: GetCurrentUserVariables): QueryRef<GetCurrentUserData, GetCurrentUserVariables>;
   operationName: string;
 }
 export const getCurrentUserRef: GetCurrentUserRef;
 
-export function getCurrentUser(): QueryPromise<GetCurrentUserData, undefined>;
-export function getCurrentUser(dc: DataConnect): QueryPromise<GetCurrentUserData, undefined>;
+export function getCurrentUser(vars: GetCurrentUserVariables): QueryPromise<GetCurrentUserData, GetCurrentUserVariables>;
+export function getCurrentUser(dc: DataConnect, vars: GetCurrentUserVariables): QueryPromise<GetCurrentUserData, GetCurrentUserVariables>;
 

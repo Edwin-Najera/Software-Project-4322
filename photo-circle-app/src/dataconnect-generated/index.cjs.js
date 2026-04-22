@@ -139,14 +139,14 @@ exports.myJoinedEvents = function myJoinedEvents(dc) {
   return executeQuery(myJoinedEventsRef(dc));
 };
 
-const getCurrentUserRef = (dc) => {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+const getCurrentUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetCurrentUser');
+  return queryRef(dcInstance, 'GetCurrentUser', inputVars);
 }
 getCurrentUserRef.operationName = 'GetCurrentUser';
 exports.getCurrentUserRef = getCurrentUserRef;
 
-exports.getCurrentUser = function getCurrentUser(dc) {
-  return executeQuery(getCurrentUserRef(dc));
+exports.getCurrentUser = function getCurrentUser(dcOrVars, vars) {
+  return executeQuery(getCurrentUserRef(dcOrVars, vars));
 };

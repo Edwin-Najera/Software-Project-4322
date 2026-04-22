@@ -18,7 +18,7 @@ function App() {
         path="/"
         element={
           <ProtectedRoute>
-            <HomePage />
+            <HomePage key={user.uid} />
           </ProtectedRoute>
         }
       />
@@ -26,7 +26,7 @@ function App() {
         path="/event/:eventId"
         element={
           <ProtectedRoute>
-            <EventPage />
+            <EventPage key={user.uid} />
           </ProtectedRoute>
         }
       />

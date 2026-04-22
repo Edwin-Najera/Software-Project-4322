@@ -1,4 +1,4 @@
-import { AllEventsData, MyPhotosData, MyEventsData, CreateEventData, CreateEventVariables, UploadPhotoData, UploadPhotoVariables, CreateUserData, CreateUserVariables, DeleteEventData, DeleteEventVariables, DeleteUserData, DeleteUserVariables, JoinEventData, JoinEventVariables, GetEventByCodeData, GetEventByCodeVariables, MyJoinedEventsData, GetCurrentUserData } from '../';
+import { AllEventsData, MyPhotosData, MyEventsData, CreateEventData, CreateEventVariables, UploadPhotoData, UploadPhotoVariables, CreateUserData, CreateUserVariables, DeleteEventData, DeleteEventVariables, DeleteUserData, DeleteUserVariables, JoinEventData, JoinEventVariables, GetEventByCodeData, GetEventByCodeVariables, MyJoinedEventsData, GetCurrentUserData, GetCurrentUserVariables } from '../';
 import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
 import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
 import { DataConnect } from 'firebase/data-connect';
@@ -38,5 +38,5 @@ export function useGetEventByCode(dc: DataConnect, vars: GetEventByCodeVariables
 export function useMyJoinedEvents(options?: useDataConnectQueryOptions<MyJoinedEventsData>): UseDataConnectQueryResult<MyJoinedEventsData, undefined>;
 export function useMyJoinedEvents(dc: DataConnect, options?: useDataConnectQueryOptions<MyJoinedEventsData>): UseDataConnectQueryResult<MyJoinedEventsData, undefined>;
 
-export function useGetCurrentUser(options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, undefined>;
-export function useGetCurrentUser(dc: DataConnect, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, undefined>;
+export function useGetCurrentUser(vars: GetCurrentUserVariables, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, GetCurrentUserVariables>;
+export function useGetCurrentUser(dc: DataConnect, vars: GetCurrentUserVariables, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, GetCurrentUserVariables>;

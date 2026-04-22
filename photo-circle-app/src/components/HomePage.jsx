@@ -17,9 +17,10 @@ function HomePage() {
   const [user, authLoading] = useAuthState(auth);
   const { mutate: createUser } = useCreateUser();
   const { data: events, isLoading, refetch } = useMyEvents({ enabled: !!user });
-  const { data: currentUserData, isLoading: userLoading } = useGetCurrentUser({
-    enabled: !!user,
-  });
+  const { data: currentUserData, isLoading: userLoading } = useGetCurrentUser(
+    { firebaseUid: user?.uid ?? "" },
+    { enabled: !!user },
+  );
   const dcUserId = currentUserData?.users?.[0]?.id;
   const navigate = useNavigate();
   const { mutate: deleteEvent } = useDeleteEvent();
@@ -28,7 +29,9 @@ function HomePage() {
   useEffect(() => {
     if (!user || userLoading) return;
 
-    // only create if user doesn't exist in Data Connect yet
+    // invalidate all queries when user changes
+    queryClient.invalidateQueries();
+
     if (currentUserData?.users?.length === 0) {
       createUser({
         displayName: user.email.split("@")[0],
@@ -43,8 +46,9 @@ function HomePage() {
 
   const handleLogOut = async () => {
     try {
-      await signOut(auth);
       queryClient.clear();
+      await signOut(auth);
+      window.location.reload();
     } catch (err) {
       console.error("Logout Error:", err);
     }

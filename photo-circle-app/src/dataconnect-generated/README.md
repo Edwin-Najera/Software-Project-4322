@@ -586,22 +586,22 @@ executeQuery(ref).then((response) => {
 ## GetCurrentUser
 You can execute the `GetCurrentUser` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
-getCurrentUser(): QueryPromise<GetCurrentUserData, undefined>;
+getCurrentUser(vars: GetCurrentUserVariables): QueryPromise<GetCurrentUserData, GetCurrentUserVariables>;
 
 interface GetCurrentUserRef {
   ...
   /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<GetCurrentUserData, undefined>;
+  (vars: GetCurrentUserVariables): QueryRef<GetCurrentUserData, GetCurrentUserVariables>;
 }
 export const getCurrentUserRef: GetCurrentUserRef;
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```typescript
-getCurrentUser(dc: DataConnect): QueryPromise<GetCurrentUserData, undefined>;
+getCurrentUser(dc: DataConnect, vars: GetCurrentUserVariables): QueryPromise<GetCurrentUserData, GetCurrentUserVariables>;
 
 interface GetCurrentUserRef {
   ...
-  (dc: DataConnect): QueryRef<GetCurrentUserData, undefined>;
+  (dc: DataConnect, vars: GetCurrentUserVariables): QueryRef<GetCurrentUserData, GetCurrentUserVariables>;
 }
 export const getCurrentUserRef: GetCurrentUserRef;
 ```
@@ -613,7 +613,13 @@ console.log(name);
 ```
 
 ### Variables
-The `GetCurrentUser` query has no variables.
+The `GetCurrentUser` query requires an argument of type `GetCurrentUserVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface GetCurrentUserVariables {
+  firebaseUid: string;
+}
+```
 ### Return Type
 Recall that executing the `GetCurrentUser` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
@@ -631,21 +637,27 @@ export interface GetCurrentUserData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, getCurrentUser } from '@dataconnect/generated';
+import { connectorConfig, getCurrentUser, GetCurrentUserVariables } from '@dataconnect/generated';
 
+// The `GetCurrentUser` query requires an argument of type `GetCurrentUserVariables`:
+const getCurrentUserVars: GetCurrentUserVariables = {
+  firebaseUid: ..., 
+};
 
 // Call the `getCurrentUser()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
-const { data } = await getCurrentUser();
+const { data } = await getCurrentUser(getCurrentUserVars);
+// Variables can be defined inline as well.
+const { data } = await getCurrentUser({ firebaseUid: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
-const { data } = await getCurrentUser(dataConnect);
+const { data } = await getCurrentUser(dataConnect, getCurrentUserVars);
 
 console.log(data.users);
 
 // Or, you can use the `Promise` API.
-getCurrentUser().then((response) => {
+getCurrentUser(getCurrentUserVars).then((response) => {
   const data = response.data;
   console.log(data.users);
 });
@@ -655,15 +667,21 @@ getCurrentUser().then((response) => {
 
 ```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, getCurrentUserRef } from '@dataconnect/generated';
+import { connectorConfig, getCurrentUserRef, GetCurrentUserVariables } from '@dataconnect/generated';
 
+// The `GetCurrentUser` query requires an argument of type `GetCurrentUserVariables`:
+const getCurrentUserVars: GetCurrentUserVariables = {
+  firebaseUid: ..., 
+};
 
 // Call the `getCurrentUserRef()` function to get a reference to the query.
-const ref = getCurrentUserRef();
+const ref = getCurrentUserRef(getCurrentUserVars);
+// Variables can be defined inline as well.
+const ref = getCurrentUserRef({ firebaseUid: ..., });
 
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
-const ref = getCurrentUserRef(dataConnect);
+const ref = getCurrentUserRef(dataConnect, getCurrentUserVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.

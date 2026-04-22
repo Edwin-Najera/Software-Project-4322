@@ -126,8 +126,8 @@ query MyJoinedEvents @auth(level: USER) {
   }
 }
 
-query GetCurrentUser @auth(level: USER) {
-  users(where: { firebaseUid: { eq_expr: "auth.uid" } }) {
+query GetCurrentUser($firebaseUid: String!) @auth(level: USER) {
+  users(where: { firebaseUid: { eq: $firebaseUid } }) {
     id
     displayName
     firebaseUid
