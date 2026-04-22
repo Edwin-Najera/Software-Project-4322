@@ -29,7 +29,7 @@ function CreateEventForm({ dcUserId, onSuccess }) {
           );
           modal?.hide();
           onSuccess?.();
-          window.location.reload();
+          refetch();
         },
         onError: (err) => console.error(err),
       },

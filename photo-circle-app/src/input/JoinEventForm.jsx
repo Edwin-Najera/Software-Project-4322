@@ -39,6 +39,7 @@ function JoinEventForm({ dcUserId, onSuccess }) {
           );
           modal?.hide();
           onSuccess?.();
+          refetch();
         },
         onError: (err) => setError(err.message),
       },
