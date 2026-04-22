@@ -8,8 +8,13 @@ function EventPage() {
   const { eventId, joinCode } = useParams();
   const navigate = useNavigate();
   const [user, authLoading] = useAuthState(auth);
-  const { data, isLoading, isError } = useMyPhotos({ enabled: !!user });
-  const { data: currentUserData } = useGetCurrentUser({ enabled: !!user });
+  const { data, isLoading, isError, refetch } = useMyPhotos({
+    enabled: !!user,
+  });
+  const { data: currentUserData } = useGetCurrentUser(
+    { firebaseUid: user?.uid ?? "" },
+    { enabled: !!user },
+  );
   const dcUserId = currentUserData?.users?.[0]?.id;
 
   if (authLoading || isLoading) return <p>Loading...</p>;
@@ -19,7 +24,7 @@ function EventPage() {
   return (
     <div className="container-fluid mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <button className="btn btn-secondary" onClick={() => navigate("-1")}>
+        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
           ← Back
         </button>
         <small>{eventId}</small>
