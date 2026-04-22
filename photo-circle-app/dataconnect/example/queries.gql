@@ -33,7 +33,7 @@ query MyEvents @auth(level: USER) {
     id
     name
     eventDate
-    photoLimit
+    joinCode
     createdAt
   }
 }
@@ -47,6 +47,7 @@ mutation CreateEvent($name: String!, $eventDate: Date!, $photoLimit: Int)
       photoLimit: $photoLimit
       ownerId_expr: "auth.uid"
       createdAt_expr: "request.time"
+      joinCode_expr: "uuidV4()"
     }
   )
 }
@@ -72,4 +73,30 @@ mutation CreateUser($displayName: String!, $email: String!, $photoUrl: String!)
       createdAt_expr: "request.time"
     }
   )
+}
+
+mutation DeleteEvent($id: UUID!) @auth(level: USER) {
+  event_delete(id: $id)
+}
+
+mutation JoinEvent($eventId: UUID!) @auth(level: USER) {
+  eventMember_insert(
+    data: {
+      eventId: $eventId
+      userId_expr: "auth.uid"
+      joinedAt_expr: "request.time"
+    }
+  )
+}
+
+query GetEventByCode($joinCode: String!) @auth(level: USER) {
+  events(where: { joinCode: { eq: $joinCode } }) {
+    id
+    name
+    eventDate
+    joinCode
+    owner {
+      displayName
+    }
+  }
 }

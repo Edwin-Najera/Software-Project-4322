@@ -12,7 +12,7 @@ For each operation, there is a wrapper hook that can be used to call the operati
 
 Here are all of the hooks that get generated:
 ```ts
-import { useAllEvents, useMyPhotos, useMyEvents, useCreateEvent, useUploadPhoto, useCreateUser } from '@dataconnect/generated/react';
+import { useAllEvents, useMyPhotos, useMyEvents, useCreateEvent, useUploadPhoto, useCreateUser, useDeleteEvent, useJoinEvent, useGetEventByCode } from '@dataconnect/generated/react';
 // The types of these hooks are available in react/index.d.ts
 
 const { data, isPending, isSuccess, isError, error } = useAllEvents();
@@ -26,6 +26,12 @@ const { data, isPending, isSuccess, isError, error } = useCreateEvent(createEven
 const { data, isPending, isSuccess, isError, error } = useUploadPhoto(uploadPhotoVars);
 
 const { data, isPending, isSuccess, isError, error } = useCreateUser(createUserVars);
+
+const { data, isPending, isSuccess, isError, error } = useDeleteEvent(deleteEventVars);
+
+const { data, isPending, isSuccess, isError, error } = useJoinEvent(joinEventVars);
+
+const { data, isPending, isSuccess, isError, error } = useGetEventByCode(getEventByCodeVars);
 
 ```
 
@@ -64,7 +70,7 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { allEvents, myPhotos, myEvents, createEvent, uploadPhoto, createUser } from '@dataconnect/generated';
+import { allEvents, myPhotos, myEvents, createEvent, uploadPhoto, createUser, deleteEvent, joinEvent, getEventByCode } from '@dataconnect/generated';
 
 
 // Operation AllEvents: 
@@ -84,6 +90,15 @@ const { data } = await UploadPhoto(dataConnect, uploadPhotoVars);
 
 // Operation CreateUser:  For variables, look at type CreateUserVars in ../index.d.ts
 const { data } = await CreateUser(dataConnect, createUserVars);
+
+// Operation DeleteEvent:  For variables, look at type DeleteEventVars in ../index.d.ts
+const { data } = await DeleteEvent(dataConnect, deleteEventVars);
+
+// Operation JoinEvent:  For variables, look at type JoinEventVars in ../index.d.ts
+const { data } = await JoinEvent(dataConnect, joinEventVars);
+
+// Operation GetEventByCode:  For variables, look at type GetEventByCodeVars in ../index.d.ts
+const { data } = await GetEventByCode(dataConnect, getEventByCodeVars);
 
 
 ```

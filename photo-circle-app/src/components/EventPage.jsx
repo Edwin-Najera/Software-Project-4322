@@ -2,7 +2,6 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useMyPhotos } from "../dataconnect-generated/react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from "../firebase/firebase"
-import { useState } from "react"
 import UploadPhotoModal from "../input/UploadPhotoModal"
 
 
@@ -30,7 +29,7 @@ function EventPage() {
             {photos.map((photo) => (
                 <div className="col-md-4 mb-3" key={photo.id}>
                     <div className="card">
-                        <img src={photo.imageUrl} alt={photo.caption} className="card-img-top" />
+                        <img src={photo.imageUrl} alt={photo.caption} className="card-img card-image" />
                     </div>
                 </div>
             ))}

@@ -49,9 +49,47 @@ export interface CreateUserVariables {
   photoUrl: string;
 }
 
+export interface DeleteEventData {
+  event_delete?: Event_Key | null;
+}
+
+export interface DeleteEventVariables {
+  id: UUIDString;
+}
+
+export interface EventMember_Key {
+  eventId: UUIDString;
+  userId: string;
+  __typename?: 'EventMember_Key';
+}
+
 export interface Event_Key {
   id: UUIDString;
   __typename?: 'Event_Key';
+}
+
+export interface GetEventByCodeData {
+  events: ({
+    id: UUIDString;
+    name: string;
+    eventDate: DateString;
+    joinCode: string;
+    owner: {
+      displayName: string;
+    };
+  } & Event_Key)[];
+}
+
+export interface GetEventByCodeVariables {
+  joinCode: string;
+}
+
+export interface JoinEventData {
+  eventMember_insert: EventMember_Key;
+}
+
+export interface JoinEventVariables {
+  eventId: UUIDString;
 }
 
 export interface MyEventsData {
@@ -59,7 +97,7 @@ export interface MyEventsData {
     id: UUIDString;
     name: string;
     eventDate: DateString;
-    photoLimit?: number | null;
+    joinCode: string;
     createdAt: TimestampString;
   } & Event_Key)[];
 }
@@ -166,4 +204,40 @@ export const createUserRef: CreateUserRef;
 
 export function createUser(vars: CreateUserVariables): MutationPromise<CreateUserData, CreateUserVariables>;
 export function createUser(dc: DataConnect, vars: CreateUserVariables): MutationPromise<CreateUserData, CreateUserVariables>;
+
+interface DeleteEventRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteEventVariables): MutationRef<DeleteEventData, DeleteEventVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: DeleteEventVariables): MutationRef<DeleteEventData, DeleteEventVariables>;
+  operationName: string;
+}
+export const deleteEventRef: DeleteEventRef;
+
+export function deleteEvent(vars: DeleteEventVariables): MutationPromise<DeleteEventData, DeleteEventVariables>;
+export function deleteEvent(dc: DataConnect, vars: DeleteEventVariables): MutationPromise<DeleteEventData, DeleteEventVariables>;
+
+interface JoinEventRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: JoinEventVariables): MutationRef<JoinEventData, JoinEventVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: JoinEventVariables): MutationRef<JoinEventData, JoinEventVariables>;
+  operationName: string;
+}
+export const joinEventRef: JoinEventRef;
+
+export function joinEvent(vars: JoinEventVariables): MutationPromise<JoinEventData, JoinEventVariables>;
+export function joinEvent(dc: DataConnect, vars: JoinEventVariables): MutationPromise<JoinEventData, JoinEventVariables>;
+
+interface GetEventByCodeRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetEventByCodeVariables): QueryRef<GetEventByCodeData, GetEventByCodeVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: GetEventByCodeVariables): QueryRef<GetEventByCodeData, GetEventByCodeVariables>;
+  operationName: string;
+}
+export const getEventByCodeRef: GetEventByCodeRef;
+
+export function getEventByCode(vars: GetEventByCodeVariables): QueryPromise<GetEventByCodeData, GetEventByCodeVariables>;
+export function getEventByCode(dc: DataConnect, vars: GetEventByCodeVariables): QueryPromise<GetEventByCodeData, GetEventByCodeVariables>;
 

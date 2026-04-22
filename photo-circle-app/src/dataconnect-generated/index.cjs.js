@@ -78,3 +78,39 @@ exports.createUserRef = createUserRef;
 exports.createUser = function createUser(dcOrVars, vars) {
   return executeMutation(createUserRef(dcOrVars, vars));
 };
+
+const deleteEventRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteEvent', inputVars);
+}
+deleteEventRef.operationName = 'DeleteEvent';
+exports.deleteEventRef = deleteEventRef;
+
+exports.deleteEvent = function deleteEvent(dcOrVars, vars) {
+  return executeMutation(deleteEventRef(dcOrVars, vars));
+};
+
+const joinEventRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'JoinEvent', inputVars);
+}
+joinEventRef.operationName = 'JoinEvent';
+exports.joinEventRef = joinEventRef;
+
+exports.joinEvent = function joinEvent(dcOrVars, vars) {
+  return executeMutation(joinEventRef(dcOrVars, vars));
+};
+
+const getEventByCodeRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetEventByCode', inputVars);
+}
+getEventByCodeRef.operationName = 'GetEventByCode';
+exports.getEventByCodeRef = getEventByCodeRef;
+
+exports.getEventByCode = function getEventByCode(dcOrVars, vars) {
+  return executeQuery(getEventByCodeRef(dcOrVars, vars));
+};

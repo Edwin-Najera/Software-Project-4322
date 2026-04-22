@@ -13,6 +13,7 @@ type Event @table {
   createdAt: Timestamp!
   photoLimit: Int
   owner: User!
+  joinCode: String!
 }
 
 type Photo @table {
@@ -27,4 +28,10 @@ type Analytic @table {
   timestamp: Timestamp!
   userIdentifier: String
   event: Event!
+}
+
+type EventMember @table(key: ["event", "user"]) {
+  event: Event!
+  user: User!
+  joinedAt: Timestamp!
 }

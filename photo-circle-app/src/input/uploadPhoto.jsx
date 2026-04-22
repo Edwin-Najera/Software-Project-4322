@@ -26,7 +26,10 @@ function UploadPhoto({eventId, onSuccess}) {
             setFile(null);
             setProgress(0);
             setUploading(false);
-            onSuccess?.();
+            const modal = Modal.getInstance(document.getElementById("createEventModal"));
+                modal?.hide();
+                onSuccess?.();
+            window.location.reload();
           },
           onError: (err) => {
             setError(err.message);
