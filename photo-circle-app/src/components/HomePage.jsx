@@ -16,7 +16,7 @@ import { useQueryClient } from "@tanstack/react-query";
 function HomePage() {
   const [user, authLoading] = useAuthState(auth);
   const { mutate: createUser } = useCreateUser();
-  const { data, isLoading, refetch } = useMyEvents({ enabled: !!user });
+  const { data: events, isLoading, refetch } = useMyEvents({ enabled: !!user });
   const { data: currentUserData, isLoading: userLoading } = useGetCurrentUser({
     enabled: !!user,
   });
@@ -82,9 +82,9 @@ function HomePage() {
         </div>
       </div>
 
-      {data?.events.length === 0 && <p>No Events yet. Create an Event!</p>}
+      {events?.events.length === 0 && <p>No Events yet. Create an Event!</p>}
       <div className="row">
-        {data?.events.map((event) => (
+        {events?.events.map((event) => (
           <div
             className="col-md-4 mb-3"
             key={event.id}
