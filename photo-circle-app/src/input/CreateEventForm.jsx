@@ -1,33 +1,58 @@
-import { useCreateEvent, useUploadPhoto } from "../dataconnect-generated/react"
+import { useCreateEvent } from "../dataconnect-generated/react"
+import { useState } from "react";
 
-function CreateEventForm() {
+function CreateEventForm({ onSuccess }) {
     const {mutate: createEvent, isLoading, isError} = useCreateEvent();
+    const [name, setName] = useState("");
+    const [eventDate, setEventDate] = useState("");
+    const [photoLimit, setPhotoLimit] = useState(100);
 
-    async function handlesubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         const form = e.target;
 
-        await createEvent ({
-            name: form.name.value,
-            eventDate: form.eventDate.value,
-            description: form.description.value,
-            photoLimit: 100,
-        }, {
-            onSuccess: () => console.log("Event created!"),
+        await createEvent (
+            {
+            name,
+            eventDate,
+            photoLimit: parseInt(photoLimit),
+            }, 
+            {
+            onSuccess: () => {
+                setName("");
+                setEventDate("");
+                setPhotoLimit(100);
+                onSuccess?.();
+                window.location.reload();
+            },
             onError: (err) => console.error(err),
         })
     }
     
   return (
-    <form onSubmit={handlesubmit}>
-        <input name="name" placeholder="Enter Name" required/>
-        <input name="eventDate" placeholder="Enter Date" required/>
-        <input name="description" placeholder="Enter Description" />
-        <button type="submit" disabled={isLoading}>
-            {isLoading ? "Creating..." : "Create Event"}
-        </button>
-        {isError && <p>Failed to create event</p>}
-    </form>
+    <div className="container">
+        <h2>Create Event</h2>
+        <form onSubmit={handleSubmit}>
+            <div className="form-floating mb-3">
+                <input className="form-control" type="text" id="eventName" placeholder="Event Name" value={name} onChange={(e) => setName(e.target.value)} required/>
+                <label htmlFor="eventName">Event Name</label>
+            </div>
+            <div className="form-floating mb-3">
+                <input className="form-control" type="date" id="eventDate" placeholder="Event Date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required/>
+                <label htmlFor="eventDate">Event Date</label>
+            </div>
+            <div className="form-floating mb-3">
+                <input className="form-control" type="number" id="photoLimit" placeholder="Photo Limit" value={photoLimit} onChange={(e) => setPhotoLimit(e.target.value)} required/>
+                <label htmlFor="photoLimit">Photo Limit</label>
+            </div>
+
+            {isError && <p className="text-danger">Failed to Create Event. Try Again</p>}
+
+            <button className="btn btn-primary" type="submit" disabled={isLoading}>
+                {isLoading ? "Creating..." : "Create Event"}
+            </button>
+        </form>
+    </div>
   )
 }
 

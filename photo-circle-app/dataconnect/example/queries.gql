@@ -7,7 +7,6 @@ query AllEvents
     id
     name
     eventDate
-    description
     photoLimit
     createdAt
     owner {
@@ -35,23 +34,17 @@ query MyEvents @auth(level: USER) {
     id
     name
     eventDate
-    description
     photoLimit
     createdAt
   }
 }
 
-mutation CreateEvent(
-  $name: String!
-  $eventDate: Date!
-  $description: String
-  $photoLimit: Int
-) @auth(level: USER) {
+mutation CreateEvent($name: String!, $eventDate: Date!, $photoLimit: Int)
+@auth(level: USER) {
   event_insert(
     data: {
       name: $name
       eventDate: $eventDate
-      description: $description
       photoLimit: $photoLimit
       ownerId_expr: "auth.uid"
       createdAt_expr: "request.time"
@@ -67,6 +60,18 @@ mutation UploadPhoto($eventId: UUID!, $imageUrl: String!, $caption: String)
       imageUrl: $imageUrl
       caption: $caption
       uploaderId_expr: "auth.uid"
+      createdAt_expr: "request.time"
+    }
+  )
+}
+
+mutation CreateUser($displayName: String!, $email: String!, $photoUrl: String!)
+@auth(level: USER) {
+  user_insert(
+    data: {
+      displayName: $displayName
+      email: $email
+      photoUrl: $photoUrl
       createdAt_expr: "request.time"
     }
   )

@@ -12,7 +12,7 @@ For each operation, there is a wrapper hook that can be used to call the operati
 
 Here are all of the hooks that get generated:
 ```ts
-import { useAllEvents, useMyPhotos, useMyEvents, useCreateEvent, useUploadPhoto } from '@dataconnect/generated/react';
+import { useAllEvents, useMyPhotos, useMyEvents, useCreateEvent, useUploadPhoto, useCreateUser } from '@dataconnect/generated/react';
 // The types of these hooks are available in react/index.d.ts
 
 const { data, isPending, isSuccess, isError, error } = useAllEvents();
@@ -24,6 +24,8 @@ const { data, isPending, isSuccess, isError, error } = useMyEvents();
 const { data, isPending, isSuccess, isError, error } = useCreateEvent(createEventVars);
 
 const { data, isPending, isSuccess, isError, error } = useUploadPhoto(uploadPhotoVars);
+
+const { data, isPending, isSuccess, isError, error } = useCreateUser(createUserVars);
 
 ```
 
@@ -62,7 +64,7 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { allEvents, myPhotos, myEvents, createEvent, uploadPhoto } from '@dataconnect/generated';
+import { allEvents, myPhotos, myEvents, createEvent, uploadPhoto, createUser } from '@dataconnect/generated';
 
 
 // Operation AllEvents: 
@@ -79,6 +81,9 @@ const { data } = await CreateEvent(dataConnect, createEventVars);
 
 // Operation UploadPhoto:  For variables, look at type UploadPhotoVars in ../index.d.ts
 const { data } = await UploadPhoto(dataConnect, uploadPhotoVars);
+
+// Operation CreateUser:  For variables, look at type CreateUserVars in ../index.d.ts
+const { data } = await CreateUser(dataConnect, createUserVars);
 
 
 ```

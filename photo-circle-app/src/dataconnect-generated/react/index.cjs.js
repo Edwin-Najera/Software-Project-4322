@@ -1,4 +1,4 @@
-const { allEventsRef, myPhotosRef, myEventsRef, createEventRef, uploadPhotoRef, connectorConfig } = require('../index.cjs.js');
+const { allEventsRef, myPhotosRef, myEventsRef, createEventRef, uploadPhotoRef, createUserRef, connectorConfig } = require('../index.cjs.js');
 const { validateArgs, CallerSdkTypeEnum } = require('firebase/data-connect');
 const { useDataConnectQuery, useDataConnectMutation, validateReactArgs } = require('@tanstack-query-firebase/react/data-connect');
 
@@ -32,6 +32,14 @@ exports.useUploadPhoto = function useUploadPhoto(dcOrOptions, options) {
   const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
   function refFactory(vars) {
     return uploadPhotoRef(dcInstance, vars);
+  }
+  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+exports.useCreateUser = function useCreateUser(dcOrOptions, options) {
+  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
+  function refFactory(vars) {
+    return createUserRef(dcInstance, vars);
   }
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }

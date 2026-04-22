@@ -15,11 +15,10 @@ export interface AllEventsData {
     id: UUIDString;
     name: string;
     eventDate: DateString;
-    description?: string | null;
     photoLimit?: number | null;
     createdAt: TimestampString;
     owner: {
-      id: UUIDString;
+      id: string;
       displayName: string;
     } & User_Key;
   } & Event_Key)[];
@@ -37,8 +36,17 @@ export interface CreateEventData {
 export interface CreateEventVariables {
   name: string;
   eventDate: DateString;
-  description?: string | null;
   photoLimit?: number | null;
+}
+
+export interface CreateUserData {
+  user_insert: User_Key;
+}
+
+export interface CreateUserVariables {
+  displayName: string;
+  email: string;
+  photoUrl: string;
 }
 
 export interface Event_Key {
@@ -51,7 +59,6 @@ export interface MyEventsData {
     id: UUIDString;
     name: string;
     eventDate: DateString;
-    description?: string | null;
     photoLimit?: number | null;
     createdAt: TimestampString;
   } & Event_Key)[];
@@ -86,7 +93,7 @@ export interface UploadPhotoVariables {
 }
 
 export interface User_Key {
-  id: UUIDString;
+  id: string;
   __typename?: 'User_Key';
 }
 
@@ -149,4 +156,16 @@ export const uploadPhotoRef: UploadPhotoRef;
 
 export function uploadPhoto(vars: UploadPhotoVariables): MutationPromise<UploadPhotoData, UploadPhotoVariables>;
 export function uploadPhoto(dc: DataConnect, vars: UploadPhotoVariables): MutationPromise<UploadPhotoData, UploadPhotoVariables>;
+
+interface CreateUserRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: CreateUserVariables): MutationRef<CreateUserData, CreateUserVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: CreateUserVariables): MutationRef<CreateUserData, CreateUserVariables>;
+  operationName: string;
+}
+export const createUserRef: CreateUserRef;
+
+export function createUser(vars: CreateUserVariables): MutationPromise<CreateUserData, CreateUserVariables>;
+export function createUser(dc: DataConnect, vars: CreateUserVariables): MutationPromise<CreateUserData, CreateUserVariables>;
 

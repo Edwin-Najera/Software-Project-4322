@@ -23,6 +23,7 @@ You can also follow the instructions from the [Data Connect documentation](https
 - [**Mutations**](#mutations)
   - [*CreateEvent*](#createevent)
   - [*UploadPhoto*](#uploadphoto)
+  - [*CreateUser*](#createuser)
 
 # TanStack Query Firebase & TanStack React Query
 This SDK provides [React](https://react.dev/) hooks generated specific to your application, for the operations found in the connector `example`. These hooks are generated using [TanStack Query Firebase](https://react-query-firebase.invertase.dev/) by our partners at Invertase, a library built on top of [TanStack React Query v5](https://tanstack.com/query/v5/docs/framework/react/overview).
@@ -139,11 +140,10 @@ export interface AllEventsData {
     id: UUIDString;
     name: string;
     eventDate: DateString;
-    description?: string | null;
     photoLimit?: number | null;
     createdAt: TimestampString;
     owner: {
-      id: UUIDString;
+      id: string;
       displayName: string;
     } & User_Key;
   } & Event_Key)[];
@@ -297,7 +297,6 @@ export interface MyEventsData {
     id: UUIDString;
     name: string;
     eventDate: DateString;
-    description?: string | null;
     photoLimit?: number | null;
     createdAt: TimestampString;
   } & Event_Key)[];
@@ -390,7 +389,6 @@ The `CreateEvent` Mutation requires an argument of type `CreateEventVariables`, 
 export interface CreateEventVariables {
   name: string;
   eventDate: DateString;
-  description?: string | null;
   photoLimit?: number | null;
 }
 ```
@@ -443,12 +441,11 @@ export default function CreateEventComponent() {
   const createEventVars: CreateEventVariables = {
     name: ..., 
     eventDate: ..., 
-    description: ..., // optional
     photoLimit: ..., // optional
   };
   mutation.mutate(createEventVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ name: ..., eventDate: ..., description: ..., photoLimit: ..., });
+  mutation.mutate({ name: ..., eventDate: ..., photoLimit: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {
@@ -566,6 +563,104 @@ export default function UploadPhotoComponent() {
   // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
   if (mutation.isSuccess) {
     console.log(mutation.data.photo_insert);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## CreateUser
+You can execute the `CreateUser` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
+```javascript
+useCreateUser(options?: useDataConnectMutationOptions<CreateUserData, FirebaseError, CreateUserVariables>): UseDataConnectMutationResult<CreateUserData, CreateUserVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useCreateUser(dc: DataConnect, options?: useDataConnectMutationOptions<CreateUserData, FirebaseError, CreateUserVariables>): UseDataConnectMutationResult<CreateUserData, CreateUserVariables>;
+```
+
+### Variables
+The `CreateUser` Mutation requires an argument of type `CreateUserVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface CreateUserVariables {
+  displayName: string;
+  email: string;
+  photoUrl: string;
+}
+```
+### Return Type
+Recall that calling the `CreateUser` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `CreateUser` Mutation is of type `CreateUserData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface CreateUserData {
+  user_insert: User_Key;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `CreateUser`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, CreateUserVariables } from '@dataconnect/generated';
+import { useCreateUser } from '@dataconnect/generated/react'
+
+export default function CreateUserComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useCreateUser();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useCreateUser(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useCreateUser(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useCreateUser(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useCreateUser` Mutation requires an argument of type `CreateUserVariables`:
+  const createUserVars: CreateUserVariables = {
+    displayName: ..., 
+    email: ..., 
+    photoUrl: ..., 
+  };
+  mutation.mutate(createUserVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ displayName: ..., email: ..., photoUrl: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(createUserVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.user_insert);
   }
   return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
 }

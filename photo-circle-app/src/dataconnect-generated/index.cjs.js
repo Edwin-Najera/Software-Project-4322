@@ -66,3 +66,15 @@ exports.uploadPhotoRef = uploadPhotoRef;
 exports.uploadPhoto = function uploadPhoto(dcOrVars, vars) {
   return executeMutation(uploadPhotoRef(dcOrVars, vars));
 };
+
+const createUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'CreateUser', inputVars);
+}
+createUserRef.operationName = 'CreateUser';
+exports.createUserRef = createUserRef;
+
+exports.createUser = function createUser(dcOrVars, vars) {
+  return executeMutation(createUserRef(dcOrVars, vars));
+};
