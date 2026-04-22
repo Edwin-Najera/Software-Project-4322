@@ -1,4 +1,4 @@
-import UploadPhoto from "./uploadPhoto";
+import UploadPhoto from "./UploadPhoto";
 
 function UploadPhotoModal({ dcUserId, eventId, onSuccess }) {
   return (
