@@ -2,7 +2,7 @@ import { useState } from "react";
 import CreateEventForm from "./CreateEventForm";
 import JoinEventForm from "./JoinEventForm";
 
-function CreateEventModal({ onSuccess }) {
+function CreateEventModal({ dcUserId, onSuccess }) {
   const [mode, setMode] = useState("create");
 
   return (
@@ -42,9 +42,9 @@ function CreateEventModal({ onSuccess }) {
               </button>
             </div>
             {mode === "create" ? (
-              <CreateEventForm onSuccess={onSuccess} />
+              <CreateEventForm dcUserId={dcUserId} onSuccess={onSuccess} />
             ) : (
-              <JoinEventForm onSuccess={onSuccess} />
+              <JoinEventForm dcUserId={dcUserId} onSuccess={onSuccess} />
             )}
           </div>
         </div>

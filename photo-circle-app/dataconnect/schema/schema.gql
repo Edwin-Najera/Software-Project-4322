@@ -1,9 +1,8 @@
 type User @table {
-  id: String! @col(name: "uid") @default(expr: "auth.uid")
+  firebaseUid: String! @default(expr: "auth.uid")
   displayName: String!
   createdAt: Timestamp!
   email: String
-  photoUrl: String
   eventLimit: Int
 }
 

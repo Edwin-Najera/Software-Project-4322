@@ -83,6 +83,17 @@ export function deleteEvent(dcOrVars, vars) {
   return executeMutation(deleteEventRef(dcOrVars, vars));
 }
 
+export const deleteUserRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteUser', inputVars);
+}
+deleteUserRef.operationName = 'DeleteUser';
+
+export function deleteUser(dcOrVars, vars) {
+  return executeMutation(deleteUserRef(dcOrVars, vars));
+}
+
 export const joinEventRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -103,5 +114,27 @@ getEventByCodeRef.operationName = 'GetEventByCode';
 
 export function getEventByCode(dcOrVars, vars) {
   return executeQuery(getEventByCodeRef(dcOrVars, vars));
+}
+
+export const myJoinedEventsRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'MyJoinedEvents');
+}
+myJoinedEventsRef.operationName = 'MyJoinedEvents';
+
+export function myJoinedEvents(dc) {
+  return executeQuery(myJoinedEventsRef(dc));
+}
+
+export const getCurrentUserRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetCurrentUser');
+}
+getCurrentUserRef.operationName = 'GetCurrentUser';
+
+export function getCurrentUser(dc) {
+  return executeQuery(getCurrentUserRef(dc));
 }
 

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { getEventByCode, useJoinEvent } from "../dataconnect-generated";
+import {
+  useGetEventByCode,
+  useJoinEvent,
+} from "../dataconnect-generated/react";
 import { Modal } from "bootstrap/dist/js/bootstrap.bundle.min";
-import { useGetEventByCode } from "../dataconnect-generated/react";
 
-function JoinEventForm({ onSuccess }) {
+function JoinEventForm({ dcUserId, onSuccess }) {
   const [joinCode, setJoinCode] = useState("");
   const [eventId, setEventId] = useState(null);
   const [eventName, setEventName] = useState("");
@@ -26,7 +28,7 @@ function JoinEventForm({ onSuccess }) {
     if (!eventId) return;
 
     joinEvent(
-      { eventId },
+      { eventId, userId: dcUserId },
       {
         onSuccess: () => {
           setJoinCode("");

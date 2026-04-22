@@ -17,7 +17,7 @@ query AllEvents
 }
 
 query MyPhotos @auth(level: USER) {
-  photos(where: { uploaderId: { eq_expr: "auth.uid" } }) {
+  photos(where: { uploader: { firebaseUid: { eq_expr: "auth.uid" } } }) {
     id
     imageUrl
     createdAt
@@ -29,7 +29,7 @@ query MyPhotos @auth(level: USER) {
 }
 
 query MyEvents @auth(level: USER) {
-  events(where: { ownerId: { eq_expr: "auth.uid" } }) {
+  events(where: { owner: { firebaseUid: { eq_expr: "auth.uid" } } }) {
     id
     name
     eventDate
@@ -38,38 +38,46 @@ query MyEvents @auth(level: USER) {
   }
 }
 
-mutation CreateEvent($name: String!, $eventDate: Date!, $photoLimit: Int)
-@auth(level: USER) {
+mutation CreateEvent(
+  $name: String!
+  $eventDate: Date!
+  $photoLimit: Int
+  $ownerId: UUID!
+) @auth(level: USER) {
   event_insert(
     data: {
       name: $name
       eventDate: $eventDate
       photoLimit: $photoLimit
-      ownerId_expr: "auth.uid"
+      owner: { id: $ownerId }
       createdAt_expr: "request.time"
       joinCode_expr: "uuidV4()"
     }
   )
 }
 
-mutation UploadPhoto($eventId: UUID!, $imageUrl: String!) @auth(level: USER) {
+mutation UploadPhoto($eventId: UUID!, $imageUrl: String!, $uploaderId: UUID!)
+@auth(level: USER) {
   photo_insert(
     data: {
       eventId: $eventId
       imageUrl: $imageUrl
-      uploaderId_expr: "auth.uid"
+      uploader: { id: $uploaderId }
       createdAt_expr: "request.time"
     }
   )
 }
 
-mutation CreateUser($displayName: String!, $email: String!, $photoUrl: String!)
-@auth(level: USER) {
+mutation CreateUser(
+  $displayName: String!
+  $email: String!
+  $firebaseUid: String!
+) @auth(level: USER) {
   user_insert(
     data: {
       displayName: $displayName
       email: $email
-      photoUrl: $photoUrl
+      firebaseUid: $firebaseUid
       createdAt_expr: "request.time"
     }
   )
@@ -77,6 +85,10 @@ mutation CreateUser($displayName: String!, $email: String!, $photoUrl: String!)
 
 mutation DeleteEvent($id: UUID!) @auth(level: USER) {
   event_delete(id: $id)
+}
+
+mutation DeleteUser($id: UUID!) @auth(level: USER) {
+  user_delete(id: $id)
 }
 
 mutation JoinEvent($eventId: UUID!) @auth(level: USER) {
@@ -98,5 +110,26 @@ query GetEventByCode($joinCode: String!) @auth(level: USER) {
     owner {
       displayName
     }
+  }
+}
+
+query MyJoinedEvents @auth(level: USER) {
+  eventMembers(where: { user: { firebaseUid: { eq_expr: "auth.uid" } } }) {
+    event {
+      id
+      name
+      eventDate
+      owner {
+        displayName
+      }
+    }
+  }
+}
+
+query GetCurrentUser @auth(level: USER) {
+  users(where: { firebaseUid: { eq_expr: "auth.uid" } }) {
+    id
+    displayName
+    firebaseUid
   }
 }

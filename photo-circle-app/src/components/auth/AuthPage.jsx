@@ -1,7 +1,10 @@
-import { useState } from "react"
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../../firebase/firebase"
-import { useCreateUser } from "../../dataconnect-generated/react"
+import { useState } from "react";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../../firebase/firebase";
+import { useCreateUser } from "../../dataconnect-generated/react";
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,30 +18,26 @@ function AuthPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+    const cleanEmail = email.trim().toLowerCase();
 
-    try{
-      
+    try {
       if (isLogin) {
-        const { user } = await signInWithEmailAndPassword(auth, email, password);
-        // create user record in case it doesn't exist yet
-        createUser({
-          displayName: user.email.split("@")[0],
-          email: user.email,
-          photoUrl: null,
-        });
-      }
-      else {
-        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, cleanEmail, password);
+      } else {
+        const { user } = await createUserWithEmailAndPassword(
+          auth,
+          cleanEmail,
+          password,
+        );
 
-        createUser ({
+        await createUser({
           displayName: email.split("@")[0],
           email: user.email,
-          photoUrl: null,
+          firebaseUid: user.uid,
         });
       }
       //Redirect after sign in
-    }
-    catch(err) {
+    } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
@@ -47,34 +46,65 @@ function AuthPage() {
 
   return (
     <>
-    <h1>{isLogin ? "Login" : "Create Account"}</h1>
+      <h1>{isLogin ? "Login" : "Create Account"}</h1>
 
-    <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
-      <form className="row g-3 d-flex justify-content-center" onSubmit={handleSubmit}>
-        <div className="form-floating col-12">
-          <input className="form-control" type="email" placeholder="Email" id="floatingEmail" value={email} onChange={(e) => setEmail(e.target.value)} required/>
-          <label htmlFor="floatingEmail">Email</label>
-        </div>
-        <div className="form-floating col-12">
-          <input className="form-control" type="password" placeholder="********" id="floatingPassword" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <label htmlFor="floatingPassword">Password</label>
-        </div>
-        {error && <p>{error}</p>}
-        <button className="btn btn-primary w-25" type="submit" disabled={loading}>
-          {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
-        </button>
-      </form>
-      <div className="row mt-3">
-        <div className="col-12 text-center">
-          <span className="row">{isLogin ? "Don't have an account?" : "Already have an account?"}</span>
-          <button className="btn btn-primary p-0" onClick={() => {setIsLogin(!isLogin); setError("")}} >
-            {isLogin ? "Sign Up" : "Login"}
+      <div className="container-fluid d-flex flex-column align-items-center justify-content-center">
+        <form
+          className="row g-3 d-flex justify-content-center"
+          onSubmit={handleSubmit}
+        >
+          <div className="form-floating col-12">
+            <input
+              className="form-control"
+              type="email"
+              placeholder="Email"
+              id="floatingEmail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <label htmlFor="floatingEmail">Email</label>
+          </div>
+          <div className="form-floating col-12">
+            <input
+              className="form-control"
+              type="password"
+              placeholder="********"
+              id="floatingPassword"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <label htmlFor="floatingPassword">Password</label>
+          </div>
+          {error && <p>{error}</p>}
+          <button
+            className="btn btn-primary w-25"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
           </button>
+        </form>
+        <div className="row mt-3">
+          <div className="col-12 text-center">
+            <span className="row">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+            </span>
+            <button
+              className="btn btn-primary p-0"
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError("");
+              }}
+            >
+              {isLogin ? "Sign Up" : "Login"}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </>
-  )
+  );
 }
 
-export default AuthPage
+export default AuthPage;

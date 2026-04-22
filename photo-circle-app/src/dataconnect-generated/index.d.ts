@@ -18,7 +18,7 @@ export interface AllEventsData {
     photoLimit?: number | null;
     createdAt: TimestampString;
     owner: {
-      id: string;
+      id: UUIDString;
       displayName: string;
     } & User_Key;
   } & Event_Key)[];
@@ -37,6 +37,7 @@ export interface CreateEventVariables {
   name: string;
   eventDate: DateString;
   photoLimit?: number | null;
+  ownerId: UUIDString;
 }
 
 export interface CreateUserData {
@@ -46,7 +47,7 @@ export interface CreateUserData {
 export interface CreateUserVariables {
   displayName: string;
   email: string;
-  photoUrl: string;
+  firebaseUid: string;
 }
 
 export interface DeleteEventData {
@@ -57,15 +58,31 @@ export interface DeleteEventVariables {
   id: UUIDString;
 }
 
+export interface DeleteUserData {
+  user_delete?: User_Key | null;
+}
+
+export interface DeleteUserVariables {
+  id: UUIDString;
+}
+
 export interface EventMember_Key {
   eventId: UUIDString;
-  userId: string;
+  userId: UUIDString;
   __typename?: 'EventMember_Key';
 }
 
 export interface Event_Key {
   id: UUIDString;
   __typename?: 'Event_Key';
+}
+
+export interface GetCurrentUserData {
+  users: ({
+    id: UUIDString;
+    displayName: string;
+    firebaseUid: string;
+  } & User_Key)[];
 }
 
 export interface GetEventByCodeData {
@@ -102,6 +119,19 @@ export interface MyEventsData {
   } & Event_Key)[];
 }
 
+export interface MyJoinedEventsData {
+  eventMembers: ({
+    event: {
+      id: UUIDString;
+      name: string;
+      eventDate: DateString;
+      owner: {
+        displayName: string;
+      };
+    } & Event_Key;
+  })[];
+}
+
 export interface MyPhotosData {
   photos: ({
     id: UUIDString;
@@ -126,10 +156,11 @@ export interface UploadPhotoData {
 export interface UploadPhotoVariables {
   eventId: UUIDString;
   imageUrl: string;
+  uploaderId: UUIDString;
 }
 
 export interface User_Key {
-  id: string;
+  id: UUIDString;
   __typename?: 'User_Key';
 }
 
@@ -217,6 +248,18 @@ export const deleteEventRef: DeleteEventRef;
 export function deleteEvent(vars: DeleteEventVariables): MutationPromise<DeleteEventData, DeleteEventVariables>;
 export function deleteEvent(dc: DataConnect, vars: DeleteEventVariables): MutationPromise<DeleteEventData, DeleteEventVariables>;
 
+interface DeleteUserRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeleteUserVariables): MutationRef<DeleteUserData, DeleteUserVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: DeleteUserVariables): MutationRef<DeleteUserData, DeleteUserVariables>;
+  operationName: string;
+}
+export const deleteUserRef: DeleteUserRef;
+
+export function deleteUser(vars: DeleteUserVariables): MutationPromise<DeleteUserData, DeleteUserVariables>;
+export function deleteUser(dc: DataConnect, vars: DeleteUserVariables): MutationPromise<DeleteUserData, DeleteUserVariables>;
+
 interface JoinEventRef {
   /* Allow users to create refs without passing in DataConnect */
   (vars: JoinEventVariables): MutationRef<JoinEventData, JoinEventVariables>;
@@ -240,4 +283,28 @@ export const getEventByCodeRef: GetEventByCodeRef;
 
 export function getEventByCode(vars: GetEventByCodeVariables): QueryPromise<GetEventByCodeData, GetEventByCodeVariables>;
 export function getEventByCode(dc: DataConnect, vars: GetEventByCodeVariables): QueryPromise<GetEventByCodeData, GetEventByCodeVariables>;
+
+interface MyJoinedEventsRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<MyJoinedEventsData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<MyJoinedEventsData, undefined>;
+  operationName: string;
+}
+export const myJoinedEventsRef: MyJoinedEventsRef;
+
+export function myJoinedEvents(): QueryPromise<MyJoinedEventsData, undefined>;
+export function myJoinedEvents(dc: DataConnect): QueryPromise<MyJoinedEventsData, undefined>;
+
+interface GetCurrentUserRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetCurrentUserData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<GetCurrentUserData, undefined>;
+  operationName: string;
+}
+export const getCurrentUserRef: GetCurrentUserRef;
+
+export function getCurrentUser(): QueryPromise<GetCurrentUserData, undefined>;
+export function getCurrentUser(dc: DataConnect): QueryPromise<GetCurrentUserData, undefined>;
 
