@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useMyPhotos, useGetCurrentUser } from "../dataconnect-generated/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/firebase";
-import UploadPhotoModal from "../input/uploadPhotoModal";
+import UploadPhotoModal from "../input/UploadPhotoModal";
 
 function EventPage() {
   const { eventId } = useParams();
