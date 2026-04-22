@@ -31,6 +31,18 @@ exports.myPhotos = function myPhotos(dc) {
   return executeQuery(myPhotosRef(dc));
 };
 
+const myEventsRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'MyEvents');
+}
+myEventsRef.operationName = 'MyEvents';
+exports.myEventsRef = myEventsRef;
+
+exports.myEvents = function myEvents(dc) {
+  return executeQuery(myEventsRef(dc));
+};
+
 const createEventRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();

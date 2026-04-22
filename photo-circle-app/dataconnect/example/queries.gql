@@ -30,6 +30,17 @@ query MyPhotos @auth(level: USER) {
   }
 }
 
+query MyEvents @auth(level: USER) {
+  events(where: { ownerId: { eq_expr: "auth.uid" } }) {
+    id
+    name
+    eventDate
+    description
+    photoLimit
+    createdAt
+  }
+}
+
 mutation CreateEvent(
   $name: String!
   $eventDate: Date!

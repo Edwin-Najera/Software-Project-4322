@@ -28,6 +28,17 @@ export function myPhotos(dc) {
   return executeQuery(myPhotosRef(dc));
 }
 
+export const myEventsRef = (dc) => {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'MyEvents');
+}
+myEventsRef.operationName = 'MyEvents';
+
+export function myEvents(dc) {
+  return executeQuery(myEventsRef(dc));
+}
+
 export const createEventRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();

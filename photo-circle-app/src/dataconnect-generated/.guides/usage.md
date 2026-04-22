@@ -12,12 +12,14 @@ For each operation, there is a wrapper hook that can be used to call the operati
 
 Here are all of the hooks that get generated:
 ```ts
-import { useAllEvents, useMyPhotos, useCreateEvent, useUploadPhoto } from '@dataconnect/generated/react';
+import { useAllEvents, useMyPhotos, useMyEvents, useCreateEvent, useUploadPhoto } from '@dataconnect/generated/react';
 // The types of these hooks are available in react/index.d.ts
 
 const { data, isPending, isSuccess, isError, error } = useAllEvents();
 
 const { data, isPending, isSuccess, isError, error } = useMyPhotos();
+
+const { data, isPending, isSuccess, isError, error } = useMyEvents();
 
 const { data, isPending, isSuccess, isError, error } = useCreateEvent(createEventVars);
 
@@ -60,7 +62,7 @@ If a user is not using a supported framework, they can use the generated SDK dir
 Here's an example of how to use it with the first 5 operations:
 
 ```js
-import { allEvents, myPhotos, createEvent, uploadPhoto } from '@dataconnect/generated';
+import { allEvents, myPhotos, myEvents, createEvent, uploadPhoto } from '@dataconnect/generated';
 
 
 // Operation AllEvents: 
@@ -68,6 +70,9 @@ const { data } = await AllEvents(dataConnect);
 
 // Operation MyPhotos: 
 const { data } = await MyPhotos(dataConnect);
+
+// Operation MyEvents: 
+const { data } = await MyEvents(dataConnect);
 
 // Operation CreateEvent:  For variables, look at type CreateEventVars in ../index.d.ts
 const { data } = await CreateEvent(dataConnect, createEventVars);

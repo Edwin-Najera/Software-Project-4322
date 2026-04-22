@@ -1,4 +1,4 @@
-const { allEventsRef, myPhotosRef, createEventRef, uploadPhotoRef, connectorConfig } = require('../index.cjs.js');
+const { allEventsRef, myPhotosRef, myEventsRef, createEventRef, uploadPhotoRef, connectorConfig } = require('../index.cjs.js');
 const { validateArgs, CallerSdkTypeEnum } = require('firebase/data-connect');
 const { useDataConnectQuery, useDataConnectMutation, validateReactArgs } = require('@tanstack-query-firebase/react/data-connect');
 
@@ -12,6 +12,12 @@ exports.useAllEvents = function useAllEvents(dcOrOptions, options) {
 exports.useMyPhotos = function useMyPhotos(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
   const ref = myPhotosRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+exports.useMyEvents = function useMyEvents(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = myEventsRef(dcInstance);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 exports.useCreateEvent = function useCreateEvent(dcOrOptions, options) {

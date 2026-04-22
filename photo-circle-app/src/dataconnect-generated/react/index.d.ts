@@ -1,4 +1,4 @@
-import { AllEventsData, MyPhotosData, CreateEventData, CreateEventVariables, UploadPhotoData, UploadPhotoVariables } from '../';
+import { AllEventsData, MyPhotosData, MyEventsData, CreateEventData, CreateEventVariables, UploadPhotoData, UploadPhotoVariables } from '../';
 import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
 import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
 import { DataConnect } from 'firebase/data-connect';
@@ -10,6 +10,9 @@ export function useAllEvents(dc: DataConnect, options?: useDataConnectQueryOptio
 
 export function useMyPhotos(options?: useDataConnectQueryOptions<MyPhotosData>): UseDataConnectQueryResult<MyPhotosData, undefined>;
 export function useMyPhotos(dc: DataConnect, options?: useDataConnectQueryOptions<MyPhotosData>): UseDataConnectQueryResult<MyPhotosData, undefined>;
+
+export function useMyEvents(options?: useDataConnectQueryOptions<MyEventsData>): UseDataConnectQueryResult<MyEventsData, undefined>;
+export function useMyEvents(dc: DataConnect, options?: useDataConnectQueryOptions<MyEventsData>): UseDataConnectQueryResult<MyEventsData, undefined>;
 
 export function useCreateEvent(options?: useDataConnectMutationOptions<CreateEventData, FirebaseError, CreateEventVariables>): UseDataConnectMutationResult<CreateEventData, CreateEventVariables>;
 export function useCreateEvent(dc: DataConnect, options?: useDataConnectMutationOptions<CreateEventData, FirebaseError, CreateEventVariables>): UseDataConnectMutationResult<CreateEventData, CreateEventVariables>;

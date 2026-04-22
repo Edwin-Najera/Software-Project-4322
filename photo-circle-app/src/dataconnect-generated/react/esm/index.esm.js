@@ -1,4 +1,4 @@
-import { allEventsRef, myPhotosRef, createEventRef, uploadPhotoRef, connectorConfig } from '../../esm/index.esm.js';
+import { allEventsRef, myPhotosRef, myEventsRef, createEventRef, uploadPhotoRef, connectorConfig } from '../../esm/index.esm.js';
 import { validateArgs, CallerSdkTypeEnum } from 'firebase/data-connect';
 import { useDataConnectQuery, useDataConnectMutation, validateReactArgs } from '@tanstack-query-firebase/react/data-connect';
 
@@ -12,6 +12,12 @@ export function useAllEvents(dcOrOptions, options) {
 export function useMyPhotos(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
   const ref = myPhotosRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+export function useMyEvents(dcOrOptions, options) {
+  const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
+  const ref = myEventsRef(dcInstance);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 export function useCreateEvent(dcOrOptions, options) {

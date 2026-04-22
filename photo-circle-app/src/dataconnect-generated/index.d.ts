@@ -46,6 +46,17 @@ export interface Event_Key {
   __typename?: 'Event_Key';
 }
 
+export interface MyEventsData {
+  events: ({
+    id: UUIDString;
+    name: string;
+    eventDate: DateString;
+    description?: string | null;
+    photoLimit?: number | null;
+    createdAt: TimestampString;
+  } & Event_Key)[];
+}
+
 export interface MyPhotosData {
   photos: ({
     id: UUIDString;
@@ -102,6 +113,18 @@ export const myPhotosRef: MyPhotosRef;
 
 export function myPhotos(): QueryPromise<MyPhotosData, undefined>;
 export function myPhotos(dc: DataConnect): QueryPromise<MyPhotosData, undefined>;
+
+interface MyEventsRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<MyEventsData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<MyEventsData, undefined>;
+  operationName: string;
+}
+export const myEventsRef: MyEventsRef;
+
+export function myEvents(): QueryPromise<MyEventsData, undefined>;
+export function myEvents(dc: DataConnect): QueryPromise<MyEventsData, undefined>;
 
 interface CreateEventRef {
   /* Allow users to create refs without passing in DataConnect */
