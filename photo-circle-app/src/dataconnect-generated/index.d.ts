@@ -68,7 +68,6 @@ export interface MyPhotosData {
   photos: ({
     id: UUIDString;
     imageUrl: string;
-    caption?: string | null;
     createdAt: TimestampString;
     event: {
       id: UUIDString;
@@ -89,7 +88,6 @@ export interface UploadPhotoData {
 export interface UploadPhotoVariables {
   eventId: UUIDString;
   imageUrl: string;
-  caption?: string | null;
 }
 
 export interface User_Key {

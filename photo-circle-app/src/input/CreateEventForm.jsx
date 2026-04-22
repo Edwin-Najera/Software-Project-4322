@@ -1,5 +1,6 @@
 import { useCreateEvent } from "../dataconnect-generated/react"
 import { useState } from "react";
+import { Modal } from "bootstrap";
 
 function CreateEventForm({ onSuccess }) {
     const {mutate: createEvent, isLoading, isError} = useCreateEvent();
@@ -22,6 +23,8 @@ function CreateEventForm({ onSuccess }) {
                 setName("");
                 setEventDate("");
                 setPhotoLimit(100);
+                const modal = Modal.getInstance(document.getElementById("createEventModal"));
+                modal?.hide();
                 onSuccess?.();
                 window.location.reload();
             },

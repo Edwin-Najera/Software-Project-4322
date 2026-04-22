@@ -204,7 +204,6 @@ export interface MyPhotosData {
   photos: ({
     id: UUIDString;
     imageUrl: string;
-    caption?: string | null;
     createdAt: TimestampString;
     event: {
       id: UUIDString;
@@ -527,7 +526,6 @@ The `UploadPhoto` mutation requires an argument of type `UploadPhotoVariables`, 
 export interface UploadPhotoVariables {
   eventId: UUIDString;
   imageUrl: string;
-  caption?: string | null;
 }
 ```
 ### Return Type
@@ -549,14 +547,13 @@ import { connectorConfig, uploadPhoto, UploadPhotoVariables } from '@dataconnect
 const uploadPhotoVars: UploadPhotoVariables = {
   eventId: ..., 
   imageUrl: ..., 
-  caption: ..., // optional
 };
 
 // Call the `uploadPhoto()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await uploadPhoto(uploadPhotoVars);
 // Variables can be defined inline as well.
-const { data } = await uploadPhoto({ eventId: ..., imageUrl: ..., caption: ..., });
+const { data } = await uploadPhoto({ eventId: ..., imageUrl: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -581,13 +578,12 @@ import { connectorConfig, uploadPhotoRef, UploadPhotoVariables } from '@dataconn
 const uploadPhotoVars: UploadPhotoVariables = {
   eventId: ..., 
   imageUrl: ..., 
-  caption: ..., // optional
 };
 
 // Call the `uploadPhotoRef()` function to get a reference to the mutation.
 const ref = uploadPhotoRef(uploadPhotoVars);
 // Variables can be defined inline as well.
-const ref = uploadPhotoRef({ eventId: ..., imageUrl: ..., caption: ..., });
+const ref = uploadPhotoRef({ eventId: ..., imageUrl: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);

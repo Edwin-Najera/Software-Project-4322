@@ -18,7 +18,6 @@ type Event @table {
 type Photo @table {
   imageUrl: String!
   createdAt: Timestamp!
-  caption: String
   event: Event!
   uploader: User!
 }

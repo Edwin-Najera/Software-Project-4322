@@ -218,7 +218,6 @@ export interface MyPhotosData {
   photos: ({
     id: UUIDString;
     imageUrl: string;
-    caption?: string | null;
     createdAt: TimestampString;
     event: {
       id: UUIDString;
@@ -487,7 +486,6 @@ The `UploadPhoto` Mutation requires an argument of type `UploadPhotoVariables`, 
 export interface UploadPhotoVariables {
   eventId: UUIDString;
   imageUrl: string;
-  caption?: string | null;
 }
 ```
 ### Return Type
@@ -539,11 +537,10 @@ export default function UploadPhotoComponent() {
   const uploadPhotoVars: UploadPhotoVariables = {
     eventId: ..., 
     imageUrl: ..., 
-    caption: ..., // optional
   };
   mutation.mutate(uploadPhotoVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ eventId: ..., imageUrl: ..., caption: ..., });
+  mutation.mutate({ eventId: ..., imageUrl: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {

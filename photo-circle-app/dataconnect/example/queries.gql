@@ -20,7 +20,6 @@ query MyPhotos @auth(level: USER) {
   photos(where: { uploaderId: { eq_expr: "auth.uid" } }) {
     id
     imageUrl
-    caption
     createdAt
     event {
       id
@@ -52,13 +51,11 @@ mutation CreateEvent($name: String!, $eventDate: Date!, $photoLimit: Int)
   )
 }
 
-mutation UploadPhoto($eventId: UUID!, $imageUrl: String!, $caption: String)
-@auth(level: USER) {
+mutation UploadPhoto($eventId: UUID!, $imageUrl: String!) @auth(level: USER) {
   photo_insert(
     data: {
       eventId: $eventId
       imageUrl: $imageUrl
-      caption: $caption
       uploaderId_expr: "auth.uid"
       createdAt_expr: "request.time"
     }
