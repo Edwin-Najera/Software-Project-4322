@@ -25,6 +25,8 @@ function JoinEventForm({ dcUserId, onSuccess }) {
   }
 
   function handleJoin() {
+    console.log("dcUserId:", dcUserId);
+    console.log("eventId:", eventId);
     if (!eventId) return;
 
     joinEvent(

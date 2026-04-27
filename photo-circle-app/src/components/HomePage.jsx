@@ -72,14 +72,11 @@ function HomePage() {
     );
   }
 
-  console.log("My Joined Events: ", joinedEvents);
-
   return (
     <div className="container-fluid mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex col-md-4 justify-content-between align-items-center mb-3">
         <h1>My Events</h1>
-        <small>{user.uid}</small>
-        <div className="row w-50">
+        <div className="row w-50-lg w-100-sm">
           <button
             className="btn btn-primary col me-3"
             data-bs-toggle="modal"

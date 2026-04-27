@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import {
   useMyPhotos,
   useEventPhotos,
@@ -113,6 +114,10 @@ function EventPage() {
                 The join code for this event is: <br />
                 {joinCode}
               </p>
+              <QRCodeSVG
+                value={`https://picnestapp.vercel.app/event/${eventId}?join=${joinCode}`}
+                size={128}
+              />
             </div>
           </div>
         </div>
