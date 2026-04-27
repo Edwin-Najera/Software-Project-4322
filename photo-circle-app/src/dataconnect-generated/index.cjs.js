@@ -31,6 +31,18 @@ exports.myPhotos = function myPhotos(dc) {
   return executeQuery(myPhotosRef(dc));
 };
 
+const eventPhotosRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'EventPhotos', inputVars);
+}
+eventPhotosRef.operationName = 'EventPhotos';
+exports.eventPhotosRef = eventPhotosRef;
+
+exports.eventPhotos = function eventPhotos(dcOrVars, vars) {
+  return executeQuery(eventPhotosRef(dcOrVars, vars));
+};
+
 const myEventsRef = (dc) => {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
@@ -103,6 +115,18 @@ exports.deleteUser = function deleteUser(dcOrVars, vars) {
   return executeMutation(deleteUserRef(dcOrVars, vars));
 };
 
+const deletePhotoRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeletePhoto', inputVars);
+}
+deletePhotoRef.operationName = 'DeletePhoto';
+exports.deletePhotoRef = deletePhotoRef;
+
+exports.deletePhoto = function deletePhoto(dcOrVars, vars) {
+  return executeMutation(deletePhotoRef(dcOrVars, vars));
+};
+
 const joinEventRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -149,4 +173,16 @@ exports.getCurrentUserRef = getCurrentUserRef;
 
 exports.getCurrentUser = function getCurrentUser(dcOrVars, vars) {
   return executeQuery(getCurrentUserRef(dcOrVars, vars));
+};
+
+const getEventRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetEvent', inputVars);
+}
+getEventRef.operationName = 'GetEvent';
+exports.getEventRef = getEventRef;
+
+exports.getEvent = function getEvent(dcOrVars, vars) {
+  return executeQuery(getEventRef(dcOrVars, vars));
 };

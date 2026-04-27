@@ -28,6 +28,18 @@ query MyPhotos @auth(level: USER) {
   }
 }
 
+query EventPhotos($eventId: UUID!) @auth(level: USER) {
+  photos(where: { event: { id: { eq: $eventId } } }) {
+    id
+    imageUrl
+    createdAt
+    event {
+      id
+      name
+    }
+  }
+}
+
 query MyEvents @auth(level: USER) {
   events(where: { owner: { firebaseUid: { eq_expr: "auth.uid" } } }) {
     id
@@ -91,11 +103,15 @@ mutation DeleteUser($id: UUID!) @auth(level: USER) {
   user_delete(id: $id)
 }
 
-mutation JoinEvent($eventId: UUID!) @auth(level: USER) {
+mutation DeletePhoto($id: UUID!) @auth(level: USER) {
+  photo_delete(id: $id)
+}
+
+mutation JoinEvent($eventId: UUID!, $userId: UUID!) @auth(level: USER) {
   eventMember_insert(
     data: {
       eventId: $eventId
-      userId_expr: "auth.uid"
+      user: { id: $userId }
       joinedAt_expr: "request.time"
     }
   )
@@ -131,5 +147,18 @@ query GetCurrentUser($firebaseUid: String!) @auth(level: USER) {
     id
     displayName
     firebaseUid
+  }
+}
+
+query GetEvent($id: UUID!) @auth(level: USER) {
+  events(where: { id: { eq: $id } }) {
+    id
+    name
+    eventDate
+    joinCode
+    photoLimit
+    owner {
+      displayName
+    }
   }
 }

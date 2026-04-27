@@ -1,7 +1,6 @@
 import { useUploadPhoto } from "../dataconnect-generated/react";
 import { Modal } from "bootstrap";
 import { useState } from "react";
-import { storage } from "../firebase/firebase";
 import { uploadPhotoToStorage } from "../firebase/uploadPhotoToStorage";
 
 function UploadPhoto({ dcUserId, eventId, onSuccess }) {

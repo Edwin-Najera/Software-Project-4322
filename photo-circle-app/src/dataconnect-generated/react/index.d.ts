@@ -1,4 +1,4 @@
-import { AllEventsData, MyPhotosData, MyEventsData, CreateEventData, CreateEventVariables, UploadPhotoData, UploadPhotoVariables, CreateUserData, CreateUserVariables, DeleteEventData, DeleteEventVariables, DeleteUserData, DeleteUserVariables, JoinEventData, JoinEventVariables, GetEventByCodeData, GetEventByCodeVariables, MyJoinedEventsData, GetCurrentUserData, GetCurrentUserVariables } from '../';
+import { AllEventsData, MyPhotosData, EventPhotosData, EventPhotosVariables, MyEventsData, CreateEventData, CreateEventVariables, UploadPhotoData, UploadPhotoVariables, CreateUserData, CreateUserVariables, DeleteEventData, DeleteEventVariables, DeleteUserData, DeleteUserVariables, DeletePhotoData, DeletePhotoVariables, JoinEventData, JoinEventVariables, GetEventByCodeData, GetEventByCodeVariables, MyJoinedEventsData, GetCurrentUserData, GetCurrentUserVariables, GetEventData, GetEventVariables } from '../';
 import { UseDataConnectQueryResult, useDataConnectQueryOptions, UseDataConnectMutationResult, useDataConnectMutationOptions} from '@tanstack-query-firebase/react/data-connect';
 import { UseQueryResult, UseMutationResult} from '@tanstack/react-query';
 import { DataConnect } from 'firebase/data-connect';
@@ -10,6 +10,9 @@ export function useAllEvents(dc: DataConnect, options?: useDataConnectQueryOptio
 
 export function useMyPhotos(options?: useDataConnectQueryOptions<MyPhotosData>): UseDataConnectQueryResult<MyPhotosData, undefined>;
 export function useMyPhotos(dc: DataConnect, options?: useDataConnectQueryOptions<MyPhotosData>): UseDataConnectQueryResult<MyPhotosData, undefined>;
+
+export function useEventPhotos(vars: EventPhotosVariables, options?: useDataConnectQueryOptions<EventPhotosData>): UseDataConnectQueryResult<EventPhotosData, EventPhotosVariables>;
+export function useEventPhotos(dc: DataConnect, vars: EventPhotosVariables, options?: useDataConnectQueryOptions<EventPhotosData>): UseDataConnectQueryResult<EventPhotosData, EventPhotosVariables>;
 
 export function useMyEvents(options?: useDataConnectQueryOptions<MyEventsData>): UseDataConnectQueryResult<MyEventsData, undefined>;
 export function useMyEvents(dc: DataConnect, options?: useDataConnectQueryOptions<MyEventsData>): UseDataConnectQueryResult<MyEventsData, undefined>;
@@ -29,6 +32,9 @@ export function useDeleteEvent(dc: DataConnect, options?: useDataConnectMutation
 export function useDeleteUser(options?: useDataConnectMutationOptions<DeleteUserData, FirebaseError, DeleteUserVariables>): UseDataConnectMutationResult<DeleteUserData, DeleteUserVariables>;
 export function useDeleteUser(dc: DataConnect, options?: useDataConnectMutationOptions<DeleteUserData, FirebaseError, DeleteUserVariables>): UseDataConnectMutationResult<DeleteUserData, DeleteUserVariables>;
 
+export function useDeletePhoto(options?: useDataConnectMutationOptions<DeletePhotoData, FirebaseError, DeletePhotoVariables>): UseDataConnectMutationResult<DeletePhotoData, DeletePhotoVariables>;
+export function useDeletePhoto(dc: DataConnect, options?: useDataConnectMutationOptions<DeletePhotoData, FirebaseError, DeletePhotoVariables>): UseDataConnectMutationResult<DeletePhotoData, DeletePhotoVariables>;
+
 export function useJoinEvent(options?: useDataConnectMutationOptions<JoinEventData, FirebaseError, JoinEventVariables>): UseDataConnectMutationResult<JoinEventData, JoinEventVariables>;
 export function useJoinEvent(dc: DataConnect, options?: useDataConnectMutationOptions<JoinEventData, FirebaseError, JoinEventVariables>): UseDataConnectMutationResult<JoinEventData, JoinEventVariables>;
 
@@ -40,3 +46,6 @@ export function useMyJoinedEvents(dc: DataConnect, options?: useDataConnectQuery
 
 export function useGetCurrentUser(vars: GetCurrentUserVariables, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, GetCurrentUserVariables>;
 export function useGetCurrentUser(dc: DataConnect, vars: GetCurrentUserVariables, options?: useDataConnectQueryOptions<GetCurrentUserData>): UseDataConnectQueryResult<GetCurrentUserData, GetCurrentUserVariables>;
+
+export function useGetEvent(vars: GetEventVariables, options?: useDataConnectQueryOptions<GetEventData>): UseDataConnectQueryResult<GetEventData, GetEventVariables>;
+export function useGetEvent(dc: DataConnect, vars: GetEventVariables, options?: useDataConnectQueryOptions<GetEventData>): UseDataConnectQueryResult<GetEventData, GetEventVariables>;

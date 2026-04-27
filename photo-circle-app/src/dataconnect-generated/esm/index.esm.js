@@ -28,6 +28,17 @@ export function myPhotos(dc) {
   return executeQuery(myPhotosRef(dc));
 }
 
+export const eventPhotosRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'EventPhotos', inputVars);
+}
+eventPhotosRef.operationName = 'EventPhotos';
+
+export function eventPhotos(dcOrVars, vars) {
+  return executeQuery(eventPhotosRef(dcOrVars, vars));
+}
+
 export const myEventsRef = (dc) => {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
@@ -94,6 +105,17 @@ export function deleteUser(dcOrVars, vars) {
   return executeMutation(deleteUserRef(dcOrVars, vars));
 }
 
+export const deletePhotoRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeletePhoto', inputVars);
+}
+deletePhotoRef.operationName = 'DeletePhoto';
+
+export function deletePhoto(dcOrVars, vars) {
+  return executeMutation(deletePhotoRef(dcOrVars, vars));
+}
+
 export const joinEventRef = (dcOrVars, vars) => {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
@@ -136,5 +158,16 @@ getCurrentUserRef.operationName = 'GetCurrentUser';
 
 export function getCurrentUser(dcOrVars, vars) {
   return executeQuery(getCurrentUserRef(dcOrVars, vars));
+}
+
+export const getEventRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetEvent', inputVars);
+}
+getEventRef.operationName = 'GetEvent';
+
+export function getEvent(dcOrVars, vars) {
+  return executeQuery(getEventRef(dcOrVars, vars));
 }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useGetEventByCode,
   useJoinEvent,
@@ -84,7 +84,9 @@ function LookupAndJoin({ joinCode, onFound, onJoin, isPending }) {
 
   const event = data?.events?.[0];
 
-  if (event) onFound(event.id, event.name);
+  useEffect(() => {
+    if (event) onFound(event.id, event.name);
+  }, [event]);
 
   return (
     <>

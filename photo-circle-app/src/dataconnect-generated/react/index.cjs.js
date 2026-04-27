@@ -1,4 +1,4 @@
-const { allEventsRef, myPhotosRef, myEventsRef, createEventRef, uploadPhotoRef, createUserRef, deleteEventRef, deleteUserRef, joinEventRef, getEventByCodeRef, myJoinedEventsRef, getCurrentUserRef, connectorConfig } = require('../index.cjs.js');
+const { allEventsRef, myPhotosRef, eventPhotosRef, myEventsRef, createEventRef, uploadPhotoRef, createUserRef, deleteEventRef, deleteUserRef, deletePhotoRef, joinEventRef, getEventByCodeRef, myJoinedEventsRef, getCurrentUserRef, getEventRef, connectorConfig } = require('../index.cjs.js');
 const { validateArgs, CallerSdkTypeEnum } = require('firebase/data-connect');
 const { useDataConnectQuery, useDataConnectMutation, validateReactArgs } = require('@tanstack-query-firebase/react/data-connect');
 
@@ -12,6 +12,12 @@ exports.useAllEvents = function useAllEvents(dcOrOptions, options) {
 exports.useMyPhotos = function useMyPhotos(dcOrOptions, options) {
   const { dc: dcInstance, options: inputOpts } = validateReactArgs(connectorConfig, dcOrOptions, options);
   const ref = myPhotosRef(dcInstance);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+exports.useEventPhotos = function useEventPhotos(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = eventPhotosRef(dcInstance, inputVars);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 
@@ -60,6 +66,14 @@ exports.useDeleteUser = function useDeleteUser(dcOrOptions, options) {
   return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }
 
+exports.useDeletePhoto = function useDeletePhoto(dcOrOptions, options) {
+  const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
+  function refFactory(vars) {
+    return deletePhotoRef(dcInstance, vars);
+  }
+  return useDataConnectMutation(refFactory, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
 exports.useJoinEvent = function useJoinEvent(dcOrOptions, options) {
   const { dc: dcInstance, vars: inputOpts } = validateArgs(connectorConfig, dcOrOptions, options);
   function refFactory(vars) {
@@ -84,5 +98,11 @@ exports.useMyJoinedEvents = function useMyJoinedEvents(dcOrOptions, options) {
 exports.useGetCurrentUser = function useGetCurrentUser(dcOrVars, varsOrOptions, options) {
   const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
   const ref = getCurrentUserRef(dcInstance, inputVars);
+  return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
+}
+
+exports.useGetEvent = function useGetEvent(dcOrVars, varsOrOptions, options) {
+  const { dc: dcInstance, vars: inputVars, options: inputOpts } = validateReactArgs(connectorConfig, dcOrVars, varsOrOptions, options, true, true);
+  const ref = getEventRef(dcInstance, inputVars);
   return useDataConnectQuery(ref, inputOpts, CallerSdkTypeEnum.GeneratedReact);
 }

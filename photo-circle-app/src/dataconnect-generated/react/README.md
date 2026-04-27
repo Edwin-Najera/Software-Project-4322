@@ -19,16 +19,19 @@ You can also follow the instructions from the [Data Connect documentation](https
 - [**Queries**](#queries)
   - [*AllEvents*](#allevents)
   - [*MyPhotos*](#myphotos)
+  - [*EventPhotos*](#eventphotos)
   - [*MyEvents*](#myevents)
   - [*GetEventByCode*](#geteventbycode)
   - [*MyJoinedEvents*](#myjoinedevents)
   - [*GetCurrentUser*](#getcurrentuser)
+  - [*GetEvent*](#getevent)
 - [**Mutations**](#mutations)
   - [*CreateEvent*](#createevent)
   - [*UploadPhoto*](#uploadphoto)
   - [*CreateUser*](#createuser)
   - [*DeleteEvent*](#deleteevent)
   - [*DeleteUser*](#deleteuser)
+  - [*DeletePhoto*](#deletephoto)
   - [*JoinEvent*](#joinevent)
 
 # TanStack Query Firebase & TanStack React Query
@@ -259,6 +262,96 @@ export default function MyPhotosComponent() {
   const dataConnect = getDataConnect(connectorConfig);
   const options = { staleTime: 5 * 1000 };
   const query = useMyPhotos(dataConnect, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.photos);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## EventPhotos
+You can execute the `EventPhotos` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useEventPhotos(dc: DataConnect, vars: EventPhotosVariables, options?: useDataConnectQueryOptions<EventPhotosData>): UseDataConnectQueryResult<EventPhotosData, EventPhotosVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useEventPhotos(vars: EventPhotosVariables, options?: useDataConnectQueryOptions<EventPhotosData>): UseDataConnectQueryResult<EventPhotosData, EventPhotosVariables>;
+```
+
+### Variables
+The `EventPhotos` Query requires an argument of type `EventPhotosVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface EventPhotosVariables {
+  eventId: UUIDString;
+}
+```
+### Return Type
+Recall that calling the `EventPhotos` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `EventPhotos` Query is of type `EventPhotosData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface EventPhotosData {
+  photos: ({
+    id: UUIDString;
+    imageUrl: string;
+    createdAt: TimestampString;
+    event: {
+      id: UUIDString;
+      name: string;
+    } & Event_Key;
+  } & Photo_Key)[];
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `EventPhotos`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, EventPhotosVariables } from '@dataconnect/generated';
+import { useEventPhotos } from '@dataconnect/generated/react'
+
+export default function EventPhotosComponent() {
+  // The `useEventPhotos` Query hook requires an argument of type `EventPhotosVariables`:
+  const eventPhotosVars: EventPhotosVariables = {
+    eventId: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useEventPhotos(eventPhotosVars);
+  // Variables can be defined inline as well.
+  const query = useEventPhotos({ eventId: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useEventPhotos(dataConnect, eventPhotosVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useEventPhotos(eventPhotosVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useEventPhotos(dataConnect, eventPhotosVars, options);
 
   // Then, you can render your component dynamically based on the status of the Query.
   if (query.isPending) {
@@ -601,6 +694,97 @@ export default function GetCurrentUserComponent() {
   // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
   if (query.isSuccess) {
     console.log(query.data.users);
+  }
+  return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
+## GetEvent
+You can execute the `GetEvent` Query using the following Query hook function, which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts):
+
+```javascript
+useGetEvent(dc: DataConnect, vars: GetEventVariables, options?: useDataConnectQueryOptions<GetEventData>): UseDataConnectQueryResult<GetEventData, GetEventVariables>;
+```
+You can also pass in a `DataConnect` instance to the Query hook function.
+```javascript
+useGetEvent(vars: GetEventVariables, options?: useDataConnectQueryOptions<GetEventData>): UseDataConnectQueryResult<GetEventData, GetEventVariables>;
+```
+
+### Variables
+The `GetEvent` Query requires an argument of type `GetEventVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface GetEventVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that calling the `GetEvent` Query hook function returns a `UseQueryResult` object. This object holds the state of your Query, including whether the Query is loading, has completed, or has succeeded/failed, and any data returned by the Query, among other things.
+
+To check the status of a Query, use the `UseQueryResult.status` field. You can also check for pending / success / error status using the `UseQueryResult.isPending`, `UseQueryResult.isSuccess`, and `UseQueryResult.isError` fields.
+
+To access the data returned by a Query, use the `UseQueryResult.data` field. The data for the `GetEvent` Query is of type `GetEventData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface GetEventData {
+  events: ({
+    id: UUIDString;
+    name: string;
+    eventDate: DateString;
+    joinCode: string;
+    photoLimit?: number | null;
+    owner: {
+      displayName: string;
+    };
+  } & Event_Key)[];
+}
+```
+
+To learn more about the `UseQueryResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery).
+
+### Using `GetEvent`'s Query hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, GetEventVariables } from '@dataconnect/generated';
+import { useGetEvent } from '@dataconnect/generated/react'
+
+export default function GetEventComponent() {
+  // The `useGetEvent` Query hook requires an argument of type `GetEventVariables`:
+  const getEventVars: GetEventVariables = {
+    id: ..., 
+  };
+
+  // You don't have to do anything to "execute" the Query.
+  // Call the Query hook function to get a `UseQueryResult` object which holds the state of your Query.
+  const query = useGetEvent(getEventVars);
+  // Variables can be defined inline as well.
+  const query = useGetEvent({ id: ..., });
+
+  // You can also pass in a `DataConnect` instance to the Query hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const query = useGetEvent(dataConnect, getEventVars);
+
+  // You can also pass in a `useDataConnectQueryOptions` object to the Query hook function.
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetEvent(getEventVars, options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectQueryOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = { staleTime: 5 * 1000 };
+  const query = useGetEvent(dataConnect, getEventVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Query.
+  if (query.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (query.isError) {
+    return <div>Error: {query.error.message}</div>;
+  }
+
+  // If the Query is successful, you can access the data returned using the `UseQueryResult.data` field.
+  if (query.isSuccess) {
+    console.log(query.data.events);
   }
   return <div>Query execution {query.isSuccess ? 'successful' : 'failed'}!</div>;
 }
@@ -1115,6 +1299,100 @@ export default function DeleteUserComponent() {
 }
 ```
 
+## DeletePhoto
+You can execute the `DeletePhoto` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
+```javascript
+useDeletePhoto(options?: useDataConnectMutationOptions<DeletePhotoData, FirebaseError, DeletePhotoVariables>): UseDataConnectMutationResult<DeletePhotoData, DeletePhotoVariables>;
+```
+You can also pass in a `DataConnect` instance to the Mutation hook function.
+```javascript
+useDeletePhoto(dc: DataConnect, options?: useDataConnectMutationOptions<DeletePhotoData, FirebaseError, DeletePhotoVariables>): UseDataConnectMutationResult<DeletePhotoData, DeletePhotoVariables>;
+```
+
+### Variables
+The `DeletePhoto` Mutation requires an argument of type `DeletePhotoVariables`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+
+```javascript
+export interface DeletePhotoVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that calling the `DeletePhoto` Mutation hook function returns a `UseMutationResult` object. This object holds the state of your Mutation, including whether the Mutation is loading, has completed, or has succeeded/failed, among other things.
+
+To check the status of a Mutation, use the `UseMutationResult.status` field. You can also check for pending / success / error status using the `UseMutationResult.isPending`, `UseMutationResult.isSuccess`, and `UseMutationResult.isError` fields.
+
+To execute the Mutation, call `UseMutationResult.mutate()`. This function executes the Mutation, but does not return the data from the Mutation.
+
+To access the data returned by a Mutation, use the `UseMutationResult.data` field. The data for the `DeletePhoto` Mutation is of type `DeletePhotoData`, which is defined in [dataconnect-generated/index.d.ts](../index.d.ts). It has the following fields:
+```javascript
+export interface DeletePhotoData {
+  photo_delete?: Photo_Key | null;
+}
+```
+
+To learn more about the `UseMutationResult` object, see the [TanStack React Query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
+
+### Using `DeletePhoto`'s Mutation hook function
+
+```javascript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, DeletePhotoVariables } from '@dataconnect/generated';
+import { useDeletePhoto } from '@dataconnect/generated/react'
+
+export default function DeletePhotoComponent() {
+  // Call the Mutation hook function to get a `UseMutationResult` object which holds the state of your Mutation.
+  const mutation = useDeletePhoto();
+
+  // You can also pass in a `DataConnect` instance to the Mutation hook function.
+  const dataConnect = getDataConnect(connectorConfig);
+  const mutation = useDeletePhoto(dataConnect);
+
+  // You can also pass in a `useDataConnectMutationOptions` object to the Mutation hook function.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useDeletePhoto(options);
+
+  // You can also pass both a `DataConnect` instance and a `useDataConnectMutationOptions` object.
+  const dataConnect = getDataConnect(connectorConfig);
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  const mutation = useDeletePhoto(dataConnect, options);
+
+  // After calling the Mutation hook function, you must call `UseMutationResult.mutate()` to execute the Mutation.
+  // The `useDeletePhoto` Mutation requires an argument of type `DeletePhotoVariables`:
+  const deletePhotoVars: DeletePhotoVariables = {
+    id: ..., 
+  };
+  mutation.mutate(deletePhotoVars);
+  // Variables can be defined inline as well.
+  mutation.mutate({ id: ..., });
+
+  // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
+  const options = {
+    onSuccess: () => { console.log('Mutation succeeded!'); }
+  };
+  mutation.mutate(deletePhotoVars, options);
+
+  // Then, you can render your component dynamically based on the status of the Mutation.
+  if (mutation.isPending) {
+    return <div>Loading...</div>;
+  }
+
+  if (mutation.isError) {
+    return <div>Error: {mutation.error.message}</div>;
+  }
+
+  // If the Mutation is successful, you can access the data returned using the `UseMutationResult.data` field.
+  if (mutation.isSuccess) {
+    console.log(mutation.data.photo_delete);
+  }
+  return <div>Mutation execution {mutation.isSuccess ? 'successful' : 'failed'}!</div>;
+}
+```
+
 ## JoinEvent
 You can execute the `JoinEvent` Mutation using the `UseMutationResult` object returned by the following Mutation hook function (which is defined in [dataconnect-generated/react/index.d.ts](./index.d.ts)):
 ```javascript
@@ -1131,6 +1409,7 @@ The `JoinEvent` Mutation requires an argument of type `JoinEventVariables`, whic
 ```javascript
 export interface JoinEventVariables {
   eventId: UUIDString;
+  userId: UUIDString;
 }
 ```
 ### Return Type
@@ -1181,10 +1460,11 @@ export default function JoinEventComponent() {
   // The `useJoinEvent` Mutation requires an argument of type `JoinEventVariables`:
   const joinEventVars: JoinEventVariables = {
     eventId: ..., 
+    userId: ..., 
   };
   mutation.mutate(joinEventVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ eventId: ..., });
+  mutation.mutate({ eventId: ..., userId: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {

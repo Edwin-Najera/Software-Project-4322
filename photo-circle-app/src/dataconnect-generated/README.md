@@ -12,16 +12,19 @@ This README will guide you through the process of using the generated JavaScript
 - [**Queries**](#queries)
   - [*AllEvents*](#allevents)
   - [*MyPhotos*](#myphotos)
+  - [*EventPhotos*](#eventphotos)
   - [*MyEvents*](#myevents)
   - [*GetEventByCode*](#geteventbycode)
   - [*MyJoinedEvents*](#myjoinedevents)
   - [*GetCurrentUser*](#getcurrentuser)
+  - [*GetEvent*](#getevent)
 - [**Mutations**](#mutations)
   - [*CreateEvent*](#createevent)
   - [*UploadPhoto*](#uploadphoto)
   - [*CreateUser*](#createuser)
   - [*DeleteEvent*](#deleteevent)
   - [*DeleteUser*](#deleteuser)
+  - [*DeletePhoto*](#deletephoto)
   - [*JoinEvent*](#joinevent)
 
 # Accessing the connector
@@ -255,6 +258,123 @@ const ref = myPhotosRef();
 // You can also pass in a `DataConnect` instance to the `QueryRef` function.
 const dataConnect = getDataConnect(connectorConfig);
 const ref = myPhotosRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.photos);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.photos);
+});
+```
+
+## EventPhotos
+You can execute the `EventPhotos` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+eventPhotos(vars: EventPhotosVariables): QueryPromise<EventPhotosData, EventPhotosVariables>;
+
+interface EventPhotosRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: EventPhotosVariables): QueryRef<EventPhotosData, EventPhotosVariables>;
+}
+export const eventPhotosRef: EventPhotosRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+eventPhotos(dc: DataConnect, vars: EventPhotosVariables): QueryPromise<EventPhotosData, EventPhotosVariables>;
+
+interface EventPhotosRef {
+  ...
+  (dc: DataConnect, vars: EventPhotosVariables): QueryRef<EventPhotosData, EventPhotosVariables>;
+}
+export const eventPhotosRef: EventPhotosRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the eventPhotosRef:
+```typescript
+const name = eventPhotosRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `EventPhotos` query requires an argument of type `EventPhotosVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface EventPhotosVariables {
+  eventId: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `EventPhotos` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `EventPhotosData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface EventPhotosData {
+  photos: ({
+    id: UUIDString;
+    imageUrl: string;
+    createdAt: TimestampString;
+    event: {
+      id: UUIDString;
+      name: string;
+    } & Event_Key;
+  } & Photo_Key)[];
+}
+```
+### Using `EventPhotos`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, eventPhotos, EventPhotosVariables } from '@dataconnect/generated';
+
+// The `EventPhotos` query requires an argument of type `EventPhotosVariables`:
+const eventPhotosVars: EventPhotosVariables = {
+  eventId: ..., 
+};
+
+// Call the `eventPhotos()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await eventPhotos(eventPhotosVars);
+// Variables can be defined inline as well.
+const { data } = await eventPhotos({ eventId: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await eventPhotos(dataConnect, eventPhotosVars);
+
+console.log(data.photos);
+
+// Or, you can use the `Promise` API.
+eventPhotos(eventPhotosVars).then((response) => {
+  const data = response.data;
+  console.log(data.photos);
+});
+```
+
+### Using `EventPhotos`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, eventPhotosRef, EventPhotosVariables } from '@dataconnect/generated';
+
+// The `EventPhotos` query requires an argument of type `EventPhotosVariables`:
+const eventPhotosVars: EventPhotosVariables = {
+  eventId: ..., 
+};
+
+// Call the `eventPhotosRef()` function to get a reference to the query.
+const ref = eventPhotosRef(eventPhotosVars);
+// Variables can be defined inline as well.
+const ref = eventPhotosRef({ eventId: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = eventPhotosRef(dataConnect, eventPhotosVars);
 
 // Call `executeQuery()` on the reference to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
@@ -693,6 +813,124 @@ console.log(data.users);
 executeQuery(ref).then((response) => {
   const data = response.data;
   console.log(data.users);
+});
+```
+
+## GetEvent
+You can execute the `GetEvent` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+getEvent(vars: GetEventVariables): QueryPromise<GetEventData, GetEventVariables>;
+
+interface GetEventRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetEventVariables): QueryRef<GetEventData, GetEventVariables>;
+}
+export const getEventRef: GetEventRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```typescript
+getEvent(dc: DataConnect, vars: GetEventVariables): QueryPromise<GetEventData, GetEventVariables>;
+
+interface GetEventRef {
+  ...
+  (dc: DataConnect, vars: GetEventVariables): QueryRef<GetEventData, GetEventVariables>;
+}
+export const getEventRef: GetEventRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the getEventRef:
+```typescript
+const name = getEventRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `GetEvent` query requires an argument of type `GetEventVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface GetEventVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `GetEvent` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetEventData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface GetEventData {
+  events: ({
+    id: UUIDString;
+    name: string;
+    eventDate: DateString;
+    joinCode: string;
+    photoLimit?: number | null;
+    owner: {
+      displayName: string;
+    };
+  } & Event_Key)[];
+}
+```
+### Using `GetEvent`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, getEvent, GetEventVariables } from '@dataconnect/generated';
+
+// The `GetEvent` query requires an argument of type `GetEventVariables`:
+const getEventVars: GetEventVariables = {
+  id: ..., 
+};
+
+// Call the `getEvent()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getEvent(getEventVars);
+// Variables can be defined inline as well.
+const { data } = await getEvent({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getEvent(dataConnect, getEventVars);
+
+console.log(data.events);
+
+// Or, you can use the `Promise` API.
+getEvent(getEventVars).then((response) => {
+  const data = response.data;
+  console.log(data.events);
+});
+```
+
+### Using `GetEvent`'s `QueryRef` function
+
+```typescript
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getEventRef, GetEventVariables } from '@dataconnect/generated';
+
+// The `GetEvent` query requires an argument of type `GetEventVariables`:
+const getEventVars: GetEventVariables = {
+  id: ..., 
+};
+
+// Call the `getEventRef()` function to get a reference to the query.
+const ref = getEventRef(getEventVars);
+// Variables can be defined inline as well.
+const ref = getEventRef({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getEventRef(dataConnect, getEventVars);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.events);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.events);
 });
 ```
 
@@ -1277,6 +1515,115 @@ executeMutation(ref).then((response) => {
 });
 ```
 
+## DeletePhoto
+You can execute the `DeletePhoto` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
+```typescript
+deletePhoto(vars: DeletePhotoVariables): MutationPromise<DeletePhotoData, DeletePhotoVariables>;
+
+interface DeletePhotoRef {
+  ...
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: DeletePhotoVariables): MutationRef<DeletePhotoData, DeletePhotoVariables>;
+}
+export const deletePhotoRef: DeletePhotoRef;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```typescript
+deletePhoto(dc: DataConnect, vars: DeletePhotoVariables): MutationPromise<DeletePhotoData, DeletePhotoVariables>;
+
+interface DeletePhotoRef {
+  ...
+  (dc: DataConnect, vars: DeletePhotoVariables): MutationRef<DeletePhotoData, DeletePhotoVariables>;
+}
+export const deletePhotoRef: DeletePhotoRef;
+```
+
+If you need the name of the operation without creating a ref, you can retrieve the operation name by calling the `operationName` property on the deletePhotoRef:
+```typescript
+const name = deletePhotoRef.operationName;
+console.log(name);
+```
+
+### Variables
+The `DeletePhoto` mutation requires an argument of type `DeletePhotoVariables`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+
+```typescript
+export interface DeletePhotoVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `DeletePhoto` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `DeletePhotoData`, which is defined in [dataconnect-generated/index.d.ts](./index.d.ts). It has the following fields:
+```typescript
+export interface DeletePhotoData {
+  photo_delete?: Photo_Key | null;
+}
+```
+### Using `DeletePhoto`'s action shortcut function
+
+```typescript
+import { getDataConnect } from 'firebase/data-connect';
+import { connectorConfig, deletePhoto, DeletePhotoVariables } from '@dataconnect/generated';
+
+// The `DeletePhoto` mutation requires an argument of type `DeletePhotoVariables`:
+const deletePhotoVars: DeletePhotoVariables = {
+  id: ..., 
+};
+
+// Call the `deletePhoto()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await deletePhoto(deletePhotoVars);
+// Variables can be defined inline as well.
+const { data } = await deletePhoto({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await deletePhoto(dataConnect, deletePhotoVars);
+
+console.log(data.photo_delete);
+
+// Or, you can use the `Promise` API.
+deletePhoto(deletePhotoVars).then((response) => {
+  const data = response.data;
+  console.log(data.photo_delete);
+});
+```
+
+### Using `DeletePhoto`'s `MutationRef` function
+
+```typescript
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, deletePhotoRef, DeletePhotoVariables } from '@dataconnect/generated';
+
+// The `DeletePhoto` mutation requires an argument of type `DeletePhotoVariables`:
+const deletePhotoVars: DeletePhotoVariables = {
+  id: ..., 
+};
+
+// Call the `deletePhotoRef()` function to get a reference to the mutation.
+const ref = deletePhotoRef(deletePhotoVars);
+// Variables can be defined inline as well.
+const ref = deletePhotoRef({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = deletePhotoRef(dataConnect, deletePhotoVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.photo_delete);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.photo_delete);
+});
+```
+
 ## JoinEvent
 You can execute the `JoinEvent` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [dataconnect-generated/index.d.ts](./index.d.ts):
 ```typescript
@@ -1312,6 +1659,7 @@ The `JoinEvent` mutation requires an argument of type `JoinEventVariables`, whic
 ```typescript
 export interface JoinEventVariables {
   eventId: UUIDString;
+  userId: UUIDString;
 }
 ```
 ### Return Type
@@ -1332,13 +1680,14 @@ import { connectorConfig, joinEvent, JoinEventVariables } from '@dataconnect/gen
 // The `JoinEvent` mutation requires an argument of type `JoinEventVariables`:
 const joinEventVars: JoinEventVariables = {
   eventId: ..., 
+  userId: ..., 
 };
 
 // Call the `joinEvent()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await joinEvent(joinEventVars);
 // Variables can be defined inline as well.
-const { data } = await joinEvent({ eventId: ..., });
+const { data } = await joinEvent({ eventId: ..., userId: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1362,12 +1711,13 @@ import { connectorConfig, joinEventRef, JoinEventVariables } from '@dataconnect/
 // The `JoinEvent` mutation requires an argument of type `JoinEventVariables`:
 const joinEventVars: JoinEventVariables = {
   eventId: ..., 
+  userId: ..., 
 };
 
 // Call the `joinEventRef()` function to get a reference to the mutation.
 const ref = joinEventRef(joinEventVars);
 // Variables can be defined inline as well.
-const ref = joinEventRef({ eventId: ..., });
+const ref = joinEventRef({ eventId: ..., userId: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
