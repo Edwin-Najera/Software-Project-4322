@@ -38,6 +38,7 @@ export interface CreateEventVariables {
   eventDate: DateString;
   photoLimit?: number | null;
   ownerId: UUIDString;
+  joinCode: string;
 }
 
 export interface CreateUserData {

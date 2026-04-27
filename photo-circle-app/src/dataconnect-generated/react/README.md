@@ -834,6 +834,7 @@ export interface CreateEventVariables {
   eventDate: DateString;
   photoLimit?: number | null;
   ownerId: UUIDString;
+  joinCode: string;
 }
 ```
 ### Return Type
@@ -887,10 +888,11 @@ export default function CreateEventComponent() {
     eventDate: ..., 
     photoLimit: ..., // optional
     ownerId: ..., 
+    joinCode: ..., 
   };
   mutation.mutate(createEventVars);
   // Variables can be defined inline as well.
-  mutation.mutate({ name: ..., eventDate: ..., photoLimit: ..., ownerId: ..., });
+  mutation.mutate({ name: ..., eventDate: ..., photoLimit: ..., ownerId: ..., joinCode: ..., });
 
   // You can also pass in a `useDataConnectMutationOptions` object to `UseMutationResult.mutate()`.
   const options = {

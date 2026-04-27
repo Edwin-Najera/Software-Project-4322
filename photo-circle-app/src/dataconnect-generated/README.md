@@ -987,6 +987,7 @@ export interface CreateEventVariables {
   eventDate: DateString;
   photoLimit?: number | null;
   ownerId: UUIDString;
+  joinCode: string;
 }
 ```
 ### Return Type
@@ -1010,13 +1011,14 @@ const createEventVars: CreateEventVariables = {
   eventDate: ..., 
   photoLimit: ..., // optional
   ownerId: ..., 
+  joinCode: ..., 
 };
 
 // Call the `createEvent()` function to execute the mutation.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await createEvent(createEventVars);
 // Variables can be defined inline as well.
-const { data } = await createEvent({ name: ..., eventDate: ..., photoLimit: ..., ownerId: ..., });
+const { data } = await createEvent({ name: ..., eventDate: ..., photoLimit: ..., ownerId: ..., joinCode: ..., });
 
 // You can also pass in a `DataConnect` instance to the action shortcut function.
 const dataConnect = getDataConnect(connectorConfig);
@@ -1043,12 +1045,13 @@ const createEventVars: CreateEventVariables = {
   eventDate: ..., 
   photoLimit: ..., // optional
   ownerId: ..., 
+  joinCode: ..., 
 };
 
 // Call the `createEventRef()` function to get a reference to the mutation.
 const ref = createEventRef(createEventVars);
 // Variables can be defined inline as well.
-const ref = createEventRef({ name: ..., eventDate: ..., photoLimit: ..., ownerId: ..., });
+const ref = createEventRef({ name: ..., eventDate: ..., photoLimit: ..., ownerId: ..., joinCode: ..., });
 
 // You can also pass in a `DataConnect` instance to the `MutationRef` function.
 const dataConnect = getDataConnect(connectorConfig);
