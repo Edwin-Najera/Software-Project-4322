@@ -8,6 +8,10 @@ function CreateEventForm({ dcUserId, onSuccess }) {
   const [eventDate, setEventDate] = useState("");
   const [photoLimit, setPhotoLimit] = useState(100);
 
+  function createJoinCode() {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     const form = e.target;
@@ -18,6 +22,7 @@ function CreateEventForm({ dcUserId, onSuccess }) {
         eventDate,
         photoLimit: parseInt(photoLimit),
         ownerId: dcUserId,
+        joinCode: createJoinCode(),
       },
       {
         onSuccess: () => {
